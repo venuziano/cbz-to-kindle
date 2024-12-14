@@ -233,7 +233,7 @@ export default function Home() {
           {/* {console.log('pdfBlobUrl', pdfBlobUrl)} */}
           {/* Progress Indicator */}
           <ProgressBar progress={progress} eta={eta} />
-          <ConversionComplete progress={progress} downloadLink={pdfBlobUrl} />
+          <ConversionComplete progress={progress} downloadLink={pdfBlobUrl as string} />
         </form>
       </div>
     </>

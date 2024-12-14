@@ -1,7 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
 import React, { useState, useEffect } from "react";
 
-function ProgressBar({ progress, eta }) {
+interface IProgressBarProperties {
+  progress: number,
+  eta: string | null
+}
+
+function ProgressBar({ progress, eta }: IProgressBarProperties) {
   const [showWarning, setShowWarning] = useState<boolean>(false);
 
   useEffect(() => {

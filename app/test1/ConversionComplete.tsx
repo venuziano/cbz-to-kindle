@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from "react";
 
-function ConversionComplete({ progress, downloadLink }) {
+interface IConversionCompleteProperties {
+  progress: number,
+  downloadLink: string
+}
+
+function ConversionComplete({ progress, downloadLink }: IConversionCompleteProperties) {
   const [showDownload, setShowDownload] = useState(true);
 
   useEffect(() => {
