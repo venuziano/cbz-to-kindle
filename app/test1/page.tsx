@@ -22,6 +22,7 @@ const images: string[] = [
 export default function Home() {
   const [newPDFWidth, setNewPDFWidth] = useState<string>('1200');
   const [newPDFQuality, setNewPDFQuality] = useState<string>('72');
+  const [hint, setHint] = useState<boolean | null>(null);
   const [file, setFile] = useState<File | null>(null);
   const [errors, setErrors] = useState<FormErrors>({});
   const [progress, setProgress] = useState<number>(0);
@@ -134,21 +135,46 @@ export default function Home() {
         // backgroundPosition: "center",
       }}>
         <form
-          className="bg-white p-8 rounded shadow-md w-full max-w-md"
+          className="bg-white p-8 rounded shadow-md max-w-md"
           onSubmit={handleSubmit}
         >
-          <h2 className="text-2xl font-bold mb-4 text-center text-gray-700">CBZ to PDF Converter 212</h2>
+          <h2 className="text-2xl font-bold text-center text-gray-700">CBZ to KINDLE</h2>
 
-          {/* <div className="relative group ml-2">
-            ❓
-            <div className="absolute left-0 -top-10 hidden w-48 p-2 text-sm text-white bg-black rounded-md shadow-lg group-hover:block">
-              <FormHints />
+
+          <div className="text-center">
+            <button
+              className="w-30 text-xs text-blue-600 py-1 px-1 rounded-md transition duration-300"
+              disabled={progress > 0 && progress < 99}
+              onClick={() => setHint(true)}
+            >
+              How to use?
+            </button>
+          </div>
+
+          {hint && (
+            <div
+              className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+              onClick={() => setHint(false)} // Closes the modal when clicking anywhere
+            >
+              <div
+                className="bg-white rounded-lg shadow-lg p-5 relative w-96"
+              >
+                {/* Close Button */}
+                <button
+                  className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 transition duration-300"
+                  onClick={() => setHint(false)}
+                  aria-label="Close modal"
+                >
+                  &times;
+                </button>
+
+                {/* Modal Content */}
+                <FormHints />
+              </div>
             </div>
-          </div> */}
+          )}
 
-          <FormHints />
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 mt-4">
             {/* Image Width Field */}
             <div>
               <label className="block text-gray-700">Image Width</label>
@@ -172,7 +198,8 @@ export default function Home() {
               <div className="flex items-center">
                 <label className="block text-gray-700">Image Quality</label>
                 <div className="relative group ml-2">
-                  ❓
+                  {/* ❓? */}
+                  ?
                   <div className="absolute left-0 -top-10 hidden w-48 p-2 text-sm text-white bg-black rounded-md shadow-lg group-hover:block">
                     Enter a value for the quality of the image (e.g., 1–100).
                   </div>
