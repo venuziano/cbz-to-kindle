@@ -135,31 +135,27 @@ export default function Home() {
         // backgroundPosition: "center",
       }}>
         <form
-          className="bg-white p-8 rounded shadow-md max-w-md"
+          className="bg-white p-8 rounded shadow-md max-w-md flex flex-col items-center mt-4"
           onSubmit={handleSubmit}
         >
           <h2 className="text-2xl font-bold text-center text-gray-700">CBZ to KINDLE</h2>
 
 
-          <div className="text-center">
-            <button
-              className="w-30 text-xs text-blue-600 py-1 px-1 rounded-md transition duration-300"
-              disabled={progress > 0 && progress < 99}
-              onClick={() => setHint(true)}
-            >
-              How to use?
-            </button>
+          <div
+            className="inline-block text-xs text-blue-600 py-1 px-1 rounded-md transition duration-300 cursor-pointer mx-auto"
+            onClick={() => setHint(true)}
+          >
+            How to use?
           </div>
 
           {hint && (
             <div
               className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
-              onClick={() => setHint(false)} // Closes the modal when clicking anywhere
+              onClick={() => setHint(false)}
             >
               <div
                 className="bg-white rounded-lg shadow-lg p-5 relative w-96"
               >
-                {/* Close Button */}
                 <button
                   className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 transition duration-300"
                   onClick={() => setHint(false)}
@@ -168,7 +164,6 @@ export default function Home() {
                   &times;
                 </button>
 
-                {/* Modal Content */}
                 <FormHints />
               </div>
             </div>
@@ -221,8 +216,7 @@ export default function Home() {
             </div>
           </div>
 
-          {/* PDF or CBZ File Input */}
-          <div className="mb-6">
+          <div className="mb-6 w-full">
             <label className="block text-gray-700 font-medium mb-2">Upload CBZ File</label>
             <div className="flex items-center">
               <label

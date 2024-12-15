@@ -19,7 +19,7 @@ function ConversionComplete({ progress, downloadLink }: IConversionCompletePrope
   }, [progress]);
 
   return (
-    <div className="mt-4">
+    <div className="mt-4 w-full">
       {progress === 100 && (
         <>
           <div className="mt-4 text-gray-700">

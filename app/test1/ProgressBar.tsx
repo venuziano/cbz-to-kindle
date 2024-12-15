@@ -21,7 +21,7 @@ function ProgressBar({ progress, eta }: IProgressBarProperties) {
   }, [progress]);
 
   return (
-    <div className="mt-4 text-gray-700">
+    <div className="mt-4 text-gray-700 w-full">
       {progress > 0 && (
       <p>Converting: {Math.round(progress)}% - ETA: {eta}</p>
 
