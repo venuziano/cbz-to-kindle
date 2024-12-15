@@ -11,6 +11,7 @@ import { FcInfo } from "react-icons/fc";
 import { IoCloseCircle } from "react-icons/io5";
 import ErrorToast from './ErrorToast';
 import SuccessToast from './SuccessToast';
+import { unzip, UnzipInflate } from 'fflate';
 
 interface FormErrors {
   newPDFWidth?: string;
@@ -147,13 +148,8 @@ export default function Home() {
   return (
     <>
       <div className="flex items-center justify-center min-h-screen bg-gray-100" style={{
-        backgroundImage: "url('/assets/test.jpg')",
-        // backgroundImage: "url('/assets/dall1.webp')",
-        // backgroundImage: `url('${images[currentImageIndex]}')`,
-        // backgroundImage: "url('/assets/all.jpg')",
+        backgroundImage: "url('/assets/background-asset.jpg')",
         backgroundSize: "contain",
-        // backgroundRepeat: "no-repeat",
-        // backgroundPosition: "center",
       }}>
         <form
           className="bg-white p-8 rounded shadow-md max-w-md flex flex-col mt-4 custom-form"
@@ -286,32 +282,33 @@ export default function Home() {
 
 const MAX_ARRAYBUFFER_SIZE_GB = 500; // Threshold: 500 GB
 
-async function streamToArrayBuffer(file: File): Promise<ArrayBuffer> {
-  const reader = file.stream().getReader();
-  const chunks: Uint8Array[] = [];
-  let done = false;
+// async function processLargeZip(blob) {
+//   // Convert the Blob into a ReadableStream of Uint8Array chunks
+//   const reader = blob.stream().getReader();
+//   let buffer = new Uint8Array(0);
 
-  while (!done) {
-    const { value, done: isDone } = await reader.read();
-    if (value) {
-      chunks.push(value);
-    }
-    done = isDone;
-  }
+//   while (true) {
+//     const { done, value } = await reader.read();
+//     if (done) break;
+//     // Append new chunks to the buffer (fflate can work in a streaming manner)
+//     const newBuffer = new Uint8Array(buffer.length + value.length);
+//     newBuffer.set(buffer, 0);
+//     newBuffer.set(value, buffer.length);
+//     buffer = newBuffer;
+//   }
 
-  // Combine chunks into a single Uint8Array
-  const totalLength = chunks.reduce((acc, chunk) => acc + chunk.length, 0);
-  const buffer = new Uint8Array(totalLength);
-
-  let offset = 0;
-  for (const chunk of chunks) {
-    buffer.set(chunk, offset);
-    offset += chunk.length;
-  }
-
-  // Return the ArrayBuffer
-  return buffer.buffer;
-}
+//   // Unzip using fflate
+//   unzip(buffer, (err, files) => {
+//     if (err) {
+//       console.error("Unzip error:", err);
+//       return;
+//     }
+//     // `files` is an object mapping filenames to their Uint8Array content
+//     for (const filename in files) {
+//       console.log(`Extracted ${filename}`, files[filename]);
+//     }
+//   });
+// }
 
 // Helper functions
 async function convertCbzToPdf(
@@ -326,10 +323,12 @@ async function convertCbzToPdf(
     console.log('file', file)
 
     const fileSizeGB = file.size / (1024 * 1024)
-    const arrayBuffer = fileSizeGB > MAX_ARRAYBUFFER_SIZE_GB ? await streamToArrayBuffer(file) : await file.arrayBuffer();
-    console.log('arrayBuffer', arrayBuffer)
+    // const arrayBuffer = fileSizeGB > MAX_ARRAYBUFFER_SIZE_GB ? await streamToBlob(file) : await file.arrayBuffer();
+    const arrayBuffer = await file.arrayBuffer()
+    // console.log('arrayBuffer', arrayBuffer)
+    // const zip = fileSizeGB > MAX_ARRAYBUFFER_SIZE_GB ? await processLargeZip(file) : await JSZip.loadAsync(await file.arrayBuffer());
     const zip = await JSZip.loadAsync(arrayBuffer);
-    console.log('zip')
+    console.log('zip', zip)
 
     // Filter and sort image files
     const imageFiles = Object.keys(zip.files)
