@@ -140,7 +140,7 @@ export default function Home() {
           onSubmit={handleSubmit}
         >
           <div className='text-center'>
-            <h2 className="text-2xl font-bold text-gray-700">CBZ to KINDLE 1</h2>
+            <h2 className="text-2xl font-bold text-gray-700">CBZ to KINDLE 12</h2>
 
 
             <div
