@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { FaCheckDouble } from "react-icons/fa6";
-
+import { FcApproval } from "react-icons/fc";
 interface IConversionCompleteProperties {
   progress: number,
-  downloadLink: string
+  handleDownloadFile: () => void
 }
 
-function ConversionComplete({ progress, downloadLink }: IConversionCompleteProperties) {
+function ConversionComplete({ progress, handleDownloadFile }: IConversionCompleteProperties) {
   const [showDownload, setShowDownload] = useState(true);
 
   useEffect(() => {
@@ -24,17 +23,16 @@ function ConversionComplete({ progress, downloadLink }: IConversionCompletePrope
       {progress === 100 && (
         <div className="text-gray-70 mt-4">
           {showDownload && (
-            <>
-              <div className="p-2 bg-green-300 text-gray-800 rounded shadow-md">
-                <p className="flex items-center space-x-2">
-                  <FaCheckDouble className="text-green-800"/>
-                  <a href={downloadLink} download="converted.pdf" className="text-blue-700 underline font-semibold">
-                    Click here
-                  </a>
-                  <span className="ml-1">to download your PDF.</span>
-                </p>
-              </div>
-            </>
+            <div className="p-2 bg-green-300 text-gray-800 rounded shadow-md flex items-center space-x-2 flex-wrap md:flex-nowrap">
+              <FcApproval className="text-green-800" />
+              <a
+                className="text-blue-700 underline font-semibold whitespace-nowrap cursor-pointer"
+                onClick={handleDownloadFile}
+              >
+                Click here
+              </a>
+              <span className="whitespace-normal sm:whitespace-nowrap">to download your Kindle file.</span>
+            </div>
           )}
         </div>
       )}

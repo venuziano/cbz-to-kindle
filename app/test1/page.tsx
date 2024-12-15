@@ -1,6 +1,7 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-import React, { useEffect, useState } from 'react';
+import React, { useCallback, useEffect, useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import JSZip from 'jszip';
 import ProgressBar from './ProgressBar';
@@ -8,6 +9,8 @@ import ConversionComplete from './ConversionComplete';
 import FormHints from './FormHints';
 import { FcInfo } from "react-icons/fc";
 import { IoCloseCircle } from "react-icons/io5";
+import ErrorToast from './ErrorToast';
+import SuccessToast from './SuccessToast';
 
 interface FormErrors {
   newPDFWidth?: string;
@@ -32,7 +35,13 @@ export default function Home() {
   const [eta, setEta] = useState<string | null>(null);
   const [showWarning, setShowWarning] = useState<boolean>(false);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
-  const [pdfBlobUrl, setPdfBlobUrl] = useState<string | null>(null);
+  const [newPDFBlob, setNewPDFBlob] = useState<Blob | null>(null);
+  const [errorToastMessage, setErrorToastMessage] = useState<string>('');
+  const [successToastMessage, setSuccessToastMessage] = useState<string>('');
+
+  // Memoize the onClose handler
+  const closeToast = useCallback(() => setErrorToastMessage(''), []);
+  const successToast = useCallback(() => setSuccessToastMessage(''), []);
 
   useEffect(() => {
     if (progress > 0 && progress < 100 && startTime) {
@@ -104,20 +113,30 @@ export default function Home() {
     if (Object.keys(formErrors).length === 0 && file) {
       setProgress(0);
       setStartTime(Date.now()); // Record start time
-      const pdfBlob = await convertCbzToPdf(file, setProgress, newPDFWidth, newPDFQuality);
+      const pdfBlob = await convertCbzToPdf(file, setProgress, setErrorToastMessage, newPDFWidth, newPDFQuality);
       if (pdfBlob) {
-        const url = URL.createObjectURL(pdfBlob);
-        setPdfBlobUrl(url);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = `${file.name.replace(/\.[^/.]+$/, '')}.pdf`;
-        document.body.appendChild(link);
-        link.click();
-        document.body.removeChild(link);
-        URL.revokeObjectURL(url);
+        setNewPDFBlob(pdfBlob)
+        setSuccessToastMessage('File converted successfully :)')
       }
     }
   };
+
+  const handleDownload = (): void => {
+    const url = URL.createObjectURL(newPDFBlob as Blob);
+
+    // Create a temporary anchor element
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = `${file?.name.replace(/\.[^/.]+$/, '')}.pdf`
+
+    // Append to the body and trigger the download
+    document.body.appendChild(link);
+    link.click();
+
+    // Clean up: remove the anchor and revoke the URL
+    document.body.removeChild(link);
+    URL.revokeObjectURL(url);
+  }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files && e.target.files[0];
@@ -255,24 +274,62 @@ export default function Home() {
           </button>
 
           <ProgressBar progress={progress} eta={eta} />
-          <ConversionComplete progress={progress} downloadLink={pdfBlobUrl as string} />
+          <ConversionComplete progress={progress} handleDownloadFile={handleDownload} />
         </form>
+     
+        <ErrorToast message={errorToastMessage} onClose={closeToast} />
+        <SuccessToast message={successToastMessage} onClose={successToast} />
       </div>
     </>
   );
+}
+
+const MAX_ARRAYBUFFER_SIZE_GB = 500; // Threshold: 500 GB
+
+async function streamToArrayBuffer(file: File): Promise<ArrayBuffer> {
+  const reader = file.stream().getReader();
+  const chunks: Uint8Array[] = [];
+  let done = false;
+
+  while (!done) {
+    const { value, done: isDone } = await reader.read();
+    if (value) {
+      chunks.push(value);
+    }
+    done = isDone;
+  }
+
+  // Combine chunks into a single Uint8Array
+  const totalLength = chunks.reduce((acc, chunk) => acc + chunk.length, 0);
+  const buffer = new Uint8Array(totalLength);
+
+  let offset = 0;
+  for (const chunk of chunks) {
+    buffer.set(chunk, offset);
+    offset += chunk.length;
+  }
+
+  // Return the ArrayBuffer
+  return buffer.buffer;
 }
 
 // Helper functions
 async function convertCbzToPdf(
   file: File,
   setProgress: (value: number) => void,
+  setErrorToastMessage: (value: string) => void,
   imageWidth: string,
   imageQuality: string
 ): Promise<Blob | null> {
   try {
-    // Read the CBZ file (ZIP archive)
-    const arrayBuffer = await file.arrayBuffer();
+    console.log('xx')
+    console.log('file', file)
+
+    const fileSizeGB = file.size / (1024 * 1024)
+    const arrayBuffer = fileSizeGB > MAX_ARRAYBUFFER_SIZE_GB ? await streamToArrayBuffer(file) : await file.arrayBuffer();
+    console.log('arrayBuffer', arrayBuffer)
     const zip = await JSZip.loadAsync(arrayBuffer);
+    console.log('zip')
 
     // Filter and sort image files
     const imageFiles = Object.keys(zip.files)
@@ -330,6 +387,7 @@ async function convertCbzToPdf(
     return pdfBlob;
   } catch (err) {
     console.error('An error occurred:', err);
+    setErrorToastMessage('An unexpected error happened :('); // Trigger the toast with the error message
     return null;
   }
 }
