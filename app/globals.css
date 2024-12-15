@@ -31,3 +31,12 @@ input::-webkit-inner-spin-button {
 input[type=number] {
   -moz-appearance: textfield;
 }
+
+
+@layer utilities {
+  @media (max-width: 767px) {
+    .custom-form {
+      width: 290px !important;
+    }
+  }
+}

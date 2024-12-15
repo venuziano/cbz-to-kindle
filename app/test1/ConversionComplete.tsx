@@ -19,13 +19,13 @@ function ConversionComplete({ progress, downloadLink }: IConversionCompletePrope
   }, [progress]);
 
   return (
-    <div className="mt-4 w-full">
+    <div className="mt-4">
       {progress === 100 && (
         <>
-          <div className="mt-4 text-gray-700">
+          <div className="text-gray-700">
             {showDownload && (
               <>
-                <div className="mt-2 p-2 bg-green-300 text-gray-800 rounded shadow-md">
+                <div className="p-2 bg-green-300 text-gray-800 rounded shadow-md">
                   <p>
                     Your download didn’t start automatically?{" "}
                     <a href={downloadLink} download="converted.pdf" className="text-blue-700 underline font-semibold">
