@@ -7,6 +7,7 @@ import ProgressBar from './ProgressBar';
 import ConversionComplete from './ConversionComplete';
 import FormHints from './FormHints';
 import { FcInfo } from "react-icons/fc";
+import { IoCloseCircle } from "react-icons/io5";
 
 interface FormErrors {
   newPDFWidth?: string;
@@ -164,7 +165,7 @@ export default function Home() {
                   onClick={() => setHint(false)}
                   aria-label="Close modal"
                 >
-                  &times;
+                  <IoCloseCircle />
                 </button>
 
                 <FormHints />
@@ -245,7 +246,6 @@ export default function Home() {
             )}
           </div>
 
-          {/* Submit Button */}
           <button
             type="submit"
             className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-300"
@@ -253,8 +253,7 @@ export default function Home() {
           >
             Convert
           </button>
-          {/* {console.log('pdfBlobUrl', pdfBlobUrl)} */}
-          {/* Progress Indicator */}
+
           <ProgressBar progress={progress} eta={eta} />
           <ConversionComplete progress={progress} downloadLink={pdfBlobUrl as string} />
         </form>
