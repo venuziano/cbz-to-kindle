@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { FaCheckDouble } from "react-icons/fa6";
 
 interface IConversionCompleteProperties {
   progress: number,
@@ -19,27 +20,25 @@ function ConversionComplete({ progress, downloadLink }: IConversionCompletePrope
   }, [progress]);
 
   return (
-    <div className="mt-4">
+    <>
       {progress === 100 && (
-        <>
-          <div className="text-gray-700">
-            {showDownload && (
-              <>
-                <div className="p-2 bg-green-300 text-gray-800 rounded shadow-md">
-                  <p>
-                    Your download didn’t start automatically?{" "}
-                    <a href={downloadLink} download="converted.pdf" className="text-blue-700 underline font-semibold">
-                      Click here
-                    </a>{" "}
-                    to download manually.
-                  </p>
-                </div>
-              </>
-            )}
-          </div>
-        </>
+        <div className="text-gray-70 mt-4">
+          {showDownload && (
+            <>
+              <div className="p-2 bg-green-300 text-gray-800 rounded shadow-md">
+                <p className="flex items-center space-x-2">
+                  <FaCheckDouble className="text-green-800"/>
+                  <a href={downloadLink} download="converted.pdf" className="text-blue-700 underline font-semibold">
+                    Click here
+                  </a>
+                  <span className="ml-1">to download your PDF.</span>
+                </p>
+              </div>
+            </>
+          )}
+        </div>
       )}
-    </div>
+    </>
   );
 }
 

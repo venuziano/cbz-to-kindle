@@ -6,7 +6,7 @@ import JSZip from 'jszip';
 import ProgressBar from './ProgressBar';
 import ConversionComplete from './ConversionComplete';
 import FormHints from './FormHints';
-// import { BeakerIcon } from '@heroicons/react';
+import { FcInfo } from "react-icons/fc";
 
 interface FormErrors {
   newPDFWidth?: string;
@@ -140,8 +140,7 @@ export default function Home() {
           onSubmit={handleSubmit}
         >
           <div className='text-center'>
-            <h2 className="text-2xl font-bold text-gray-700">CBZ to KINDLE 12</h2>
-
+            <h2 className="text-2xl font-bold text-gray-700">CBZ TO KINDLE</h2>
 
             <div
               className="inline-block text-xs text-blue-600 py-1 px-1 rounded-md transition duration-300 cursor-pointer mx-auto"
@@ -196,10 +195,8 @@ export default function Home() {
             <div>
               <div className="flex items-center">
                 <label className="block text-gray-700">Image Quality</label>
-                <div className="relative group ml-2">
-                  {/* ❓? */}
-                  {/* ? */}
-                  {/* <BeakerIcon className="h-6 w-6 text-blue-500" /> */}
+                <div className="relative group ml-2 cursor-pointer">
+                  <FcInfo/>
                   <div className="absolute left-0 -top-10 hidden w-48 p-2 text-sm text-white bg-black rounded-md shadow-lg group-hover:block">
                     Enter a value for the quality of the image (e.g., 1–100).
                   </div>
