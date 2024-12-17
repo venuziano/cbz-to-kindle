@@ -12,6 +12,9 @@ import { IoCloseCircle } from "react-icons/io5";
 import ErrorToast from './ErrorToast';
 import SuccessToast from './SuccessToast';
 import { unzip, UnzipInflate } from 'fflate';
+import GitHubLink from './GitHubLink';
+import DonateLink from './DonateLink';
+import Actions from './Actions';
 
 interface FormErrors {
   newPDFWidth?: string;
@@ -147,7 +150,7 @@ export default function Home() {
 
   return (
     <>
-      <div className="flex items-center justify-center min-h-screen bg-gray-100" style={{
+      <div className="relative flex items-center flex-col justify-center min-h-screen bg-gray-100" style={{
         backgroundImage: "url('/assets/background-asset.jpg')",
         backgroundSize: "contain",
       }}>
@@ -212,7 +215,7 @@ export default function Home() {
               <div className="flex items-center">
                 <label className="block text-gray-700">Image Quality</label>
                 <div className="relative group ml-2 cursor-pointer">
-                  <FcInfo/>
+                  <FcInfo />
                   <div className="absolute left-0 -top-10 hidden w-48 p-2 text-sm text-white bg-black rounded-md shadow-lg group-hover:block">
                     Enter a value for the quality of the image (e.g., 1–100).
                   </div>
@@ -272,7 +275,10 @@ export default function Home() {
           <ProgressBar progress={progress} eta={eta} />
           <ConversionComplete progress={progress} handleDownloadFile={handleDownload} />
         </form>
-     
+
+        <Actions customClassName="absolute bottom-4"/>
+        {/* <GitHubLink customClassName="absolute bottom-4"/> */}
+
         <ErrorToast message={errorToastMessage} onClose={closeToast} />
         <SuccessToast message={successToastMessage} onClose={successToast} />
       </div>

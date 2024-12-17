@@ -1,0 +1,23 @@
+import { FaCoffee } from 'react-icons/fa';
+import { motion } from 'framer-motion';
+
+
+export default function DonateLink() {
+  return (
+    <a
+      href="https://buymeacoffee.com/venuziano?amount=1"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="flex items-center gap-2 bg-yellow-400 text-white p-3 rounded-lg shadow hover:bg-yellow-500 transition duration-300"
+    >
+      <motion.div
+        animate={{ rotate: [0, -10, 10, 0], scale: [1, 1.2, 1] }}
+        transition={{ repeat: Infinity, duration: 2 }}
+        className="inline-block"
+      >
+        <FaCoffee size={24} />
+      </motion.div>
+      <span>Buy Me a Coffee</span>
+    </a>
+  );
+}
