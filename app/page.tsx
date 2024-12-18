@@ -36,7 +36,7 @@ export default function Home() {
   const [newPDFBlob, setNewPDFBlob] = useState<Blob | null>(null);
   const [errorToastMessage, setErrorToastMessage] = useState<string>('');
   const [successToastMessage, setSuccessToastMessage] = useState<string>('');
-
+  
   // Memoize the onClose handler
   const closeToast = useCallback(() => setErrorToastMessage(''), []);
   const successToast = useCallback(() => setSuccessToastMessage(''), []);
@@ -131,11 +131,18 @@ export default function Home() {
     URL.revokeObjectURL(url);
   }
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
     const selectedFile = e.target.files && e.target.files[0];
     setFile(selectedFile || null);
   };
 
+  const fetchUserLocation = async (category: string, action: string, label: string): Promise<void> => {
+    const response = await fetch("https://ipapi.co/json/");
+    const data = await response.json();
+
+    console.log("User Location:", data.city, data.country_name);
+    logEvent(category, action, `${label} + ${data.city}, ${data.country_name}`);
+  };
 
   return (
     <>
@@ -163,7 +170,8 @@ export default function Home() {
               className="inline-block text-xs text-blue-600 py-1 px-1 rounded-md transition duration-300 cursor-pointer mx-auto"
               onClick={() => {
                 setHint(true)
-                logEvent("Interaction", "Div Clicked", "How to use 2?")
+                // logEvent("Interaction", "Div Clicked", "How to use 2?")
+                fetchUserLocation("Interaction", "Div Clicked", "How to use 2?")
               }}
             >
               How to use 2?
