@@ -14,8 +14,8 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "CBZ 2 Kindle",
-  description: "Allows you to convert any CBZ file to PDF to use in your Kindle device.",
+  title: "CBZ 2 PDF",
+  description: "Convert any CBZ file to PDF to use in your Kindle device or do whatever you want! =D",
 };
 
 export default function RootLayout({

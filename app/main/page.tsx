@@ -15,6 +15,8 @@ import { unzip, UnzipInflate } from 'fflate';
 import GitHubLink from './GitHubLink';
 import DonateLink from './DonateLink';
 import Actions from './Actions';
+import { useRouter } from 'next/router';
+import { useGA } from '@/hooks/useGA';
 
 interface FormErrors {
   newPDFWidth?: string;
@@ -46,6 +48,25 @@ export default function Home() {
   // Memoize the onClose handler
   const closeToast = useCallback(() => setErrorToastMessage(''), []);
   const successToast = useCallback(() => setSuccessToastMessage(''), []);
+
+  const { logPageView } = useGA();
+  const router = useRouter();
+
+  useEffect(() => {
+    const handleRouteChange = (url: string) => {
+      logPageView(url);
+    };
+
+    // Track initial page load
+    handleRouteChange(router.asPath);
+
+    // Subscribe to route changes
+    router.events.on("routeChangeComplete", handleRouteChange);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChange);
+    };
+  }, [logPageView, router]);
 
   useEffect(() => {
     if (progress > 0 && progress < 100 && startTime) {
@@ -159,7 +180,7 @@ export default function Home() {
           onSubmit={handleSubmit}
         >
           <div className='text-center'>
-            <h2 className="text-2xl font-bold text-gray-700">CBZ TO KINDLE</h2>
+            <h2 className="text-2xl font-bold text-gray-700">CBZ 2 PDF</h2>
 
             <div
               className="inline-block text-xs text-blue-600 py-1 px-1 rounded-md transition duration-300 cursor-pointer mx-auto"

@@ -5,7 +5,7 @@ import { motion } from 'framer-motion';
 export default function DonateLink() {
   return (
     <a
-      href="https://buymeacoffee.com/venuziano?amount=1"
+      href="https://ko-fi.com/venuziano"
       target="_blank"
       rel="noopener noreferrer"
       className="flex items-center gap-2 bg-yellow-400 text-white p-3 rounded-lg shadow hover:bg-yellow-500 transition duration-300"
