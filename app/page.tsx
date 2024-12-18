@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
-export const dynamic = 'force-dynamic';
 
 import React, { useCallback, useEffect, useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
@@ -14,7 +13,6 @@ import { IoCloseCircle } from "react-icons/io5";
 import ErrorToast from './main/ErrorToast';
 import SuccessToast from './main/SuccessToast';
 import Actions from './main/Actions';
-import { usePathname, useSearchParams } from "next/navigation";
 import { useGA } from '@/hooks/useGA';
 
 interface FormErrors {
@@ -24,9 +22,6 @@ interface FormErrors {
 }
 
 export default function Home() {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
   const { logPageView } = useGA();
 
   const [newPDFWidth, setNewPDFWidth] = useState<string>('1200');
@@ -48,12 +43,10 @@ export default function Home() {
 
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const currentUrl = `${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
+      const currentUrl = `https://cbz-to-kindle.vercel.app/`;
       logPageView(currentUrl);
-
-      // Track URL changes via pathname and searchParams
     }
-  }, [pathname, searchParams, logPageView]);
+  }, [logPageView]);
 
   useEffect(() => {
     if (progress > 0 && progress < 100 && startTime) {
