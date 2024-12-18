@@ -16,7 +16,6 @@ export const useGA = () => {
 
   const logPageView = (url: string) => {
     ReactGA.send({ hitType: "pageview", page: url });
-    console.log("Logged page view:", url);
   };
 
   const logEvent = (category: string, action: string, label = "") => {
@@ -30,7 +29,6 @@ export const useGA = () => {
     } catch (error) {
       console.log('error logEvent', error)
     }
-    
   };
 
   return { logPageView, logEvent };

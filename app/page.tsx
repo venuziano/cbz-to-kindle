@@ -14,6 +14,7 @@ import ErrorToast from './main/ErrorToast';
 import SuccessToast from './main/SuccessToast';
 import Actions from './main/Actions';
 import { useGA } from '@/hooks/useGA';
+import { getDeviceInfo } from '@/utils/getDeviceInfo';
 
 interface FormErrors {
   newPDFWidth?: string;
@@ -36,18 +37,45 @@ export default function Home() {
   const [newPDFBlob, setNewPDFBlob] = useState<Blob | null>(null);
   const [errorToastMessage, setErrorToastMessage] = useState<string>('');
   const [successToastMessage, setSuccessToastMessage] = useState<string>('');
-  
+  const [reactDeviceInfo, setDeviceInfo] = useState<any>(null);
+  const [userInfo, setUserInfo] = useState<any>(null);
+
   // Memoize the onClose handler
   const closeToast = useCallback(() => setErrorToastMessage(''), []);
   const successToast = useCallback(() => setSuccessToastMessage(''), []);
 
   useEffect(() => {
     // if (typeof window !== "undefined") {
-      const currentUrl = `https://cbz-to-kindle.vercel.app/`;
-      logPageView(currentUrl);
-      // Track URL changes via pathname and searchParams
+    const currentUrl = `https://cbz-to-kindle.vercel.app/`;
+    logPageView(currentUrl);
+    // Track URL changes via pathname and searchParams
     // }
   }, [logPageView]);
+
+  useEffect(() => {
+    const deviceInfo = getDeviceInfo();
+
+    if (deviceInfo) {
+      setDeviceInfo(deviceInfo)
+    }
+  }, [setDeviceInfo]);
+
+  useEffect(() => {
+    const getUserInfo = async () => {
+      try {
+        const response = await fetch("https://ipapi.co/json/");
+        const data = await response.json();
+  
+        if (data) {
+          setUserInfo(data);
+        }
+      } catch (error) {
+        console.error("Error fetching user info:", error);
+      }
+    };
+  
+    getUserInfo(); // Call the async function
+  }, [setUserInfo]);
 
   useEffect(() => {
     if (progress > 0 && progress < 100 && startTime) {
@@ -137,11 +165,8 @@ export default function Home() {
   };
 
   const fetchUserLocation = async (category: string, action: string, label: string): Promise<void> => {
-    const response = await fetch("https://ipapi.co/json/");
-    const data = await response.json();
-
-    console.log("User Location:", data.city, data.country_name);
-    logEvent(category, action, `${label} + ${data.city}, ${data.country_name}`);
+    console.log("User Location:", userInfo.city, userInfo.country_name);
+    logEvent(category, action, `${label} + ${userInfo.city}, ${userInfo.country_name} + device: ${JSON.stringify(reactDeviceInfo)}`);
   };
 
   return (
@@ -284,7 +309,7 @@ export default function Home() {
           <ConversionComplete progress={progress} handleDownloadFile={handleDownload} />
         </form>
 
-        <Actions customClassName="absolute bottom-4"/>
+        <Actions customClassName="absolute bottom-4" />
         {/* <GitHubLink customClassName="absolute bottom-4"/> */}
 
         <ErrorToast message={errorToastMessage} onClose={closeToast} />
