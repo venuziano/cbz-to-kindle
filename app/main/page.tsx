@@ -43,19 +43,21 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    const handleRouteChange = (url: string) => {
-      logPageView(url);
-    };
+    if (typeof window !== "undefined") {
+      const handleRouteChange = (url: string) => {
+        logPageView(url);
+      };
 
-    // Track initial page load
-    handleRouteChange(router.asPath);
+      // Track initial page load
+      handleRouteChange(router.asPath);
 
-    // Subscribe to route changes
-    router.events.on("routeChangeComplete", handleRouteChange);
+      // Subscribe to route changes
+      router.events.on("routeChangeComplete", handleRouteChange);
 
-    return () => {
-      router.events.off("routeChangeComplete", handleRouteChange);
-    };
+      return () => {
+        router.events.off("routeChangeComplete", handleRouteChange);
+      };
+    }
   }, [logPageView, router]);
 
   useEffect(() => {
