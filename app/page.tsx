@@ -22,7 +22,7 @@ interface FormErrors {
 }
 
 export default function Home() {
-  const { logPageView } = useGA();
+  const { logPageView, logEvent } = useGA();
 
   const [newPDFWidth, setNewPDFWidth] = useState<string>('1200');
   const [newPDFQuality, setNewPDFQuality] = useState<string>('72');
@@ -73,11 +73,6 @@ export default function Home() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formErrors: FormErrors = {};
-
-    // window.gtag('event', 'button_click', {
-    //   event_category: 'button',
-    //   event_label: 'cta_button',
-    // });
 
     // Validate first number
     if (!newPDFWidth) {
@@ -163,6 +158,17 @@ export default function Home() {
             </div>
           </div>
 
+          <div className='text-center'>
+            <div
+              className="inline-block text-xs text-blue-600 py-1 px-1 rounded-md transition duration-300 cursor-pointer mx-auto"
+              onClick={() => {
+                setHint(true)
+                logEvent("Interaction", "Div Clicked", "How to use 2?")
+              }}
+            >
+              How to use 2?
+            </div>
+          </div>
 
           {hint && (
             <div
