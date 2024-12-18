@@ -12,7 +12,7 @@ import { IoCloseCircle } from "react-icons/io5";
 import ErrorToast from './ErrorToast';
 import SuccessToast from './SuccessToast';
 import Actions from './Actions';
-import { useRouter } from 'next/router';
+import { usePathname, useSearchParams } from "next/navigation";
 import { useGA } from '@/hooks/useGA';
 
 interface FormErrors {
@@ -22,6 +22,11 @@ interface FormErrors {
 }
 
 export default function Home() {
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const { logPageView } = useGA();
+
   const [newPDFWidth, setNewPDFWidth] = useState<string>('1200');
   const [newPDFQuality, setNewPDFQuality] = useState<string>('72');
   const [hint, setHint] = useState<boolean | null>(null);
@@ -39,26 +44,14 @@ export default function Home() {
   const closeToast = useCallback(() => setErrorToastMessage(''), []);
   const successToast = useCallback(() => setSuccessToastMessage(''), []);
 
-  const { logPageView } = useGA();
-  const router = useRouter();
-
   useEffect(() => {
     if (typeof window !== "undefined") {
-      const handleRouteChange = (url: string) => {
-        logPageView(url);
-      };
+      const currentUrl = `${pathname}${searchParams.toString() ? `?${searchParams.toString()}` : ""}`;
+      logPageView(currentUrl);
 
-      // Track initial page load
-      handleRouteChange(router.asPath);
-
-      // Subscribe to route changes
-      router.events.on("routeChangeComplete", handleRouteChange);
-
-      return () => {
-        router.events.off("routeChangeComplete", handleRouteChange);
-      };
+      // Track URL changes via pathname and searchParams
     }
-  }, [logPageView, router]);
+  }, [pathname, searchParams, logPageView]);
 
   useEffect(() => {
     if (progress > 0 && progress < 100 && startTime) {
