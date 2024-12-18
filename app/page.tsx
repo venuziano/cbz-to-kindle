@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 "use client";
+export const dynamic = 'force-dynamic';
+
 import React, { useCallback, useEffect, useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import JSZip from 'jszip';
