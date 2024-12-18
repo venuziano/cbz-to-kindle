@@ -11,9 +11,6 @@ import { FcInfo } from "react-icons/fc";
 import { IoCloseCircle } from "react-icons/io5";
 import ErrorToast from './ErrorToast';
 import SuccessToast from './SuccessToast';
-import { unzip, UnzipInflate } from 'fflate';
-import GitHubLink from './GitHubLink';
-import DonateLink from './DonateLink';
 import Actions from './Actions';
 import { useRouter } from 'next/router';
 import { useGA } from '@/hooks/useGA';
@@ -23,12 +20,6 @@ interface FormErrors {
   newPDFQuality?: string;
   file?: string;
 }
-
-const images: string[] = [
-  "/assets/test.jpg",
-  "/assets/dall1.webp",
-  "/assets/all.jpg",
-];
 
 export default function Home() {
   const [newPDFWidth, setNewPDFWidth] = useState<string>('1200');
@@ -40,7 +31,6 @@ export default function Home() {
   const [startTime, setStartTime] = useState<number | null>(null);
   const [eta, setEta] = useState<string | null>(null);
   const [showWarning, setShowWarning] = useState<boolean>(false);
-  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [newPDFBlob, setNewPDFBlob] = useState<Blob | null>(null);
   const [errorToastMessage, setErrorToastMessage] = useState<string>('');
   const [successToastMessage, setSuccessToastMessage] = useState<string>('');
@@ -88,14 +78,6 @@ export default function Home() {
       setShowWarning(true);
     }
   }, [progress, showWarning]);
-
-  useEffect(() => {
-    const interval = setInterval(() => {
-      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
-    }, 2000); // Switch every 2 seconds
-
-    return () => clearInterval(interval); // Cleanup interval on unmount
-  }, []);
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
