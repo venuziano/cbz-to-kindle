@@ -20,12 +20,17 @@ export const useGA = () => {
   };
 
   const logEvent = (category: string, action: string, label = "") => {
-    ReactGA.event({
-      category: category,
-      action: action,
-      label: label,
-    });
-    console.log("Logged event:", { category, action, label });
+    try {
+      ReactGA.event({
+        category: category,
+        action: action,
+        label: label,
+      });
+      console.log("Logged event:", { category, action, label });
+    } catch (error) {
+      console.log('error logEvent', error)
+    }
+    
   };
 
   return { logPageView, logEvent };
