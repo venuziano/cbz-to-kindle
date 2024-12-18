@@ -42,10 +42,11 @@ export default function Home() {
   const successToast = useCallback(() => setSuccessToastMessage(''), []);
 
   useEffect(() => {
-    if (typeof window !== "undefined") {
+    // if (typeof window !== "undefined") {
       const currentUrl = `https://cbz-to-kindle.vercel.app/`;
       logPageView(currentUrl);
-    }
+      // Track URL changes via pathname and searchParams
+    // }
   }, [logPageView]);
 
   useEffect(() => {
