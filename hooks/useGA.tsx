@@ -4,10 +4,8 @@ import ReactGA from "react-ga4";
 
 export interface IRecordGAReturnProperties {
   category: string
-  // label: string
+  label?: string
   action: string
-  // userInfo: any
-  // reactDeviceInfo: any
 }
 
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
@@ -26,24 +24,21 @@ export const useGA = () => {
     ReactGA.send({ hitType: "pageview", page: url });
   };
 
-  const logEvent = (category: string, action: string, label = "") => {
+  const recordGa = (properties: IRecordGAReturnProperties) => {
+    const { category, action, label = '' } = properties
+
     try {
       ReactGA.event({
         category: category,
         action: action,
         label: label,
       });
-      console.log("Logged event:", { category, action, label });
+
+      console.log('recordGa', category, action)
     } catch (error) {
       console.log('error logEvent', error)
     }
   };
 
-  const recordGa = async (properties: IRecordGAReturnProperties): Promise<void> => {
-    const { category, action } = properties
-    console.log("User Location:", category, action);
-    logEvent(category, action);
-  };
-
-  return { logPageView, logEvent, recordGa };
+  return { logPageView, recordGa };
 };

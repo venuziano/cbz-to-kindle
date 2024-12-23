@@ -181,7 +181,13 @@ export default function Home() {
               onClick={() => {
                 setHint(true)
                 recordGa({category: 'Interaction', action: 'How to use test1212'})
-                sendGTMEvent({ event: 'How to use tagTest12', value: 'test?' })
+                try {
+                  sendGTMEvent({ event: 'How to use tagTest12', value: 'test?' })
+                  console.log('sendGTMEvent')
+
+                } catch (error) {
+                  console.log('sendGTMEvent error')
+                }
               }}
             >
               How to use?
