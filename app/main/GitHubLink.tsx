@@ -1,3 +1,4 @@
+import { useGA } from '@/hooks/useGA';
 import { FaGithub } from 'react-icons/fa';
 
 interface IGitHubLinkProperties {
@@ -5,9 +6,15 @@ interface IGitHubLinkProperties {
 }
 
 export default function GitHubLink({ customClassName }: IGitHubLinkProperties) {
+  const { recordGa } = useGA();
+
   return (
-    <div className={`flex flex-col justify-center items-center bg-white rounded-lg shadow-lg p-2 ${customClassName}`}>
+    <div 
+      className={`flex flex-col justify-center items-center bg-white rounded-lg shadow-lg p-2 ${customClassName}`}
+      onClick={() => recordGa({category: 'Interaction', action: 'Github test1212'})}
+    >
       <a
+
         href="https://github.com/venuziano"
         target="_blank"
         rel="noopener noreferrer"

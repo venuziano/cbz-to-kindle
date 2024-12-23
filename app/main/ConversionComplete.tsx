@@ -1,12 +1,16 @@
+import { useGA } from "@/hooks/useGA";
 import React, { useState, useEffect } from "react";
 import { FcApproval } from "react-icons/fc";
+
 interface IConversionCompleteProperties {
   progress: number,
-  handleDownloadFile: () => void
+  handleDownloadFile: () => void,
 }
 
 function ConversionComplete({ progress, handleDownloadFile }: IConversionCompleteProperties) {
-  const [showDownload, setShowDownload] = useState(true);
+    const { recordGa } = useGA();
+  
+    const [showDownload, setShowDownload] = useState(true);
 
   useEffect(() => {
     if (progress === 100) {
@@ -16,7 +20,7 @@ function ConversionComplete({ progress, handleDownloadFile }: IConversionComplet
       }, 2000); // Wait 2 seconds to show the link if no download starts
       return () => clearTimeout(timer); // Cleanup the timer
     }
-  }, [progress]);
+  }, [progress, recordGa]);
 
   return (
     <>
@@ -27,7 +31,7 @@ function ConversionComplete({ progress, handleDownloadFile }: IConversionComplet
               <FcApproval className="text-green-800" />
               <a
                 className="text-blue-700 underline font-semibold whitespace-nowrap cursor-pointer"
-                onClick={handleDownloadFile}
+                onClick={() => { handleDownloadFile(); recordGa({category: 'Interaction', action: 'File Downloaded test1212'}) }}
               >
                 Click here
               </a>

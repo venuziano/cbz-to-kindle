@@ -23,7 +23,7 @@ interface FormErrors {
 }
 
 export default function Home() {
-  const { logPageView, logEvent } = useGA();
+  const { logPageView, recordGa } = useGA();
 
   const [newPDFWidth, setNewPDFWidth] = useState<string>('1200');
   const [newPDFQuality, setNewPDFQuality] = useState<string>('72');
@@ -45,11 +45,8 @@ export default function Home() {
   const successToast = useCallback(() => setSuccessToastMessage(''), []);
 
   useEffect(() => {
-    // if (typeof window !== "undefined") {
     const currentUrl = `https://cbz-to-kindle.vercel.app/`;
     logPageView(currentUrl);
-    // Track URL changes via pathname and searchParams
-    // }
   }, [logPageView]);
 
   useEffect(() => {
@@ -136,6 +133,7 @@ export default function Home() {
       setStartTime(Date.now()); // Record start time
       const pdfBlob = await convertCbzToPdf(file, setProgress, setErrorToastMessage, newPDFWidth, newPDFQuality);
       if (pdfBlob) {
+        recordGa({category: 'Interaction', action: 'Finish to uploaded test1212'})
         setNewPDFBlob(pdfBlob)
         setSuccessToastMessage('File converted successfully :)')
       }
@@ -164,11 +162,6 @@ export default function Home() {
     setFile(selectedFile || null);
   };
 
-  const fetchUserLocation = async (category: string, action: string, label: string): Promise<void> => {
-    console.log("User Location:", userInfo.city, userInfo.country_name);
-    logEvent(category, action, `${label} + ${userInfo.city}, ${userInfo.country_name} + device: ${JSON.stringify(reactDeviceInfo)}`);
-  };
-
   return (
     <>
       <div className="relative flex items-center flex-col justify-center min-h-screen bg-gray-100" style={{
@@ -184,22 +177,12 @@ export default function Home() {
 
             <div
               className="inline-block text-xs text-blue-600 py-1 px-1 rounded-md transition duration-300 cursor-pointer mx-auto"
-              onClick={() => setHint(true)}
-            >
-              How to use?
-            </div>
-          </div>
-
-          <div className='text-center'>
-            <div
-              className="inline-block text-xs text-blue-600 py-1 px-1 rounded-md transition duration-300 cursor-pointer mx-auto"
               onClick={() => {
                 setHint(true)
-                // logEvent("Interaction", "Div Clicked", "How to use 2?")
-                fetchUserLocation("Interaction", "Div Clicked", "How to use 2?")
+                recordGa({category: 'Interaction', action: 'How to use test1212'})
               }}
             >
-              How to use 2?
+              How to use?
             </div>
           </div>
 
@@ -287,6 +270,7 @@ export default function Home() {
                 onChange={handleFileChange}
                 className="hidden"
                 disabled={progress > 0 && progress < 99}
+                onClick={() => recordGa({category: 'Interaction', action: 'Choose File test1212'})}
               />
               <span id="fileName" className="ml-3 text-gray-500 text-sm truncate" title={file ? file.name : "No file chosen"}>
                 {file ? file.name : "No file chosen"}
@@ -301,6 +285,7 @@ export default function Home() {
             type="submit"
             className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-300"
             disabled={progress > 0 && progress < 99}
+            onClick={() => recordGa({category: 'Interaction', action: 'Convert test1212'})}
           >
             Convert
           </button>
@@ -310,7 +295,6 @@ export default function Home() {
         </form>
 
         <Actions customClassName="absolute bottom-4" />
-        {/* <GitHubLink customClassName="absolute bottom-4"/> */}
 
         <ErrorToast message={errorToastMessage} onClose={closeToast} />
         <SuccessToast message={successToastMessage} onClose={successToast} />
@@ -358,8 +342,8 @@ async function convertCbzToPdf(
   imageQuality: string
 ): Promise<Blob | null> {
   try {
-    console.log('xx')
-    console.log('file', file)
+    // console.log('xx')
+    // console.log('file', file)
 
     const fileSizeGB = file.size / (1024 * 1024)
     // const arrayBuffer = fileSizeGB > MAX_ARRAYBUFFER_SIZE_GB ? await streamToBlob(file) : await file.arrayBuffer();
@@ -367,7 +351,7 @@ async function convertCbzToPdf(
     // console.log('arrayBuffer', arrayBuffer)
     // const zip = fileSizeGB > MAX_ARRAYBUFFER_SIZE_GB ? await processLargeZip(file) : await JSZip.loadAsync(await file.arrayBuffer());
     const zip = await JSZip.loadAsync(arrayBuffer);
-    console.log('zip', zip)
+    // console.log('zip', zip)
 
     // Filter and sort image files
     const imageFiles = Object.keys(zip.files)

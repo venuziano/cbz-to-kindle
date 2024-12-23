@@ -1,7 +1,15 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
 import ReactGA from "react-ga4";
 
-// const GA_TRACKING_ID = 'process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID';
+export interface IRecordGAReturnProperties {
+  category: string
+  // label: string
+  action: string
+  // userInfo: any
+  // reactDeviceInfo: any
+}
+
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
 
 export const useGA = () => {
@@ -31,5 +39,11 @@ export const useGA = () => {
     }
   };
 
-  return { logPageView, logEvent };
+  const recordGa = async (properties: IRecordGAReturnProperties): Promise<void> => {
+    const { category, action } = properties
+    console.log("User Location:", category, action);
+    logEvent(category, action);
+  };
+
+  return { logPageView, logEvent, recordGa };
 };
