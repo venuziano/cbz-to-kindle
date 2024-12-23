@@ -22,6 +22,10 @@ export const metadata: Metadata = {
 
 const GTM_TRACKING_ID = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID;
 
+if (typeof window !== 'undefined' && window.__VERCEL_INSIGHTS__) {
+  delete window.__VERCEL_INSIGHTS__;
+}
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -33,6 +37,7 @@ export default function RootLayout({
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
+          
           {children}
         </body>
     </html>

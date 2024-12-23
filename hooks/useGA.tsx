@@ -12,7 +12,6 @@ const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
 
 export const useGA = () => {
   useEffect(() => {
-    // Ensure this runs only in the browser
     if (GA_TRACKING_ID) {
       ReactGA.initialize(GA_TRACKING_ID);
     } else {
