@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { GoogleTagManager } from '@next/third-parties/google'
+
 import "./globals.css";
-// import { Suspense } from 'react';
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -19,6 +20,8 @@ export const metadata: Metadata = {
   description: "Convert any CBZ file to PDF to use in your Kindle device or do whatever you want! =D",
 };
 
+const GTM_TRACKING_ID = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -26,13 +29,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/* <Suspense fallback={<div>Loading...</div>}> */}
+      <GoogleTagManager gtmId={GTM_TRACKING_ID as string} />
         <body
           className={`${geistSans.variable} ${geistMono.variable} antialiased`}
         >
           {children}
         </body>
-      {/* </Suspense> */}
     </html>
   );
 }

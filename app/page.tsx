@@ -15,6 +15,7 @@ import SuccessToast from './main/SuccessToast';
 import Actions from './main/Actions';
 import { useGA } from '@/hooks/useGA';
 import { getDeviceInfo } from '@/utils/getDeviceInfo';
+import { sendGTMEvent } from '@next/third-parties/google'
 
 interface FormErrors {
   newPDFWidth?: string;
@@ -180,6 +181,7 @@ export default function Home() {
               onClick={() => {
                 setHint(true)
                 recordGa({category: 'Interaction', action: 'How to use test1212'})
+                sendGTMEvent({ event: 'How to use tagTest12', value: 'test?' })
               }}
             >
               How to use?
