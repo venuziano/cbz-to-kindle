@@ -2,7 +2,6 @@ import { FaCoffee } from 'react-icons/fa';
 import { motion } from 'framer-motion';
 import { useGA } from '@/hooks/useGA';
 
-
 export default function DonateLink() {
   const { recordGa } = useGA();
  

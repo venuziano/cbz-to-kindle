@@ -1,7 +1,10 @@
 "use client";
 import React from 'react';
+import { useGA } from '@/hooks/useGA';
 
 export default function FormHints() {
+  const { recordGa } = useGA();
+  
   return (
     <div className="p-4 bg-gray-100 rounded-md border border-gray-300 shadow-sm">
       <p className="text-sm text-gray-700 mb-4">
@@ -17,7 +20,10 @@ export default function FormHints() {
       <p className="text-sm text-gray-500 italic mt-2">
         These recommendations are based on my personal usage and may vary depending on your specific requirements and constraints.
       </p>
-      <div className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-300 shadow-md">
+      <div 
+        className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-300 shadow-md"
+        onClick={() => recordGa({category: 'Interaction', action: 'Test file downloaded test1212'})}
+      >
         <p className="text-sm text-gray-700 font-medium mb-2">
           Don’t have a CBZ file to test?
         </p>
