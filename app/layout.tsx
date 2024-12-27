@@ -20,10 +20,6 @@ export const metadata: Metadata = {
   description: "Convert any CBZ file to PDF to use in your Kindle device or do whatever you want! =D",
 };
 
-if (typeof window !== 'undefined' && window.__VERCEL_INSIGHTS__) {
-  delete window.__VERCEL_INSIGHTS__;
-}
-
 export default function RootLayout({
   children,
 }: Readonly<{
