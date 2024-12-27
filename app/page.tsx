@@ -14,8 +14,6 @@ import ErrorToast from './main/ErrorToast';
 import SuccessToast from './main/SuccessToast';
 import Actions from './main/Actions';
 import { useGA } from '@/hooks/useGA';
-import { getDeviceInfo } from '@/utils/getDeviceInfo';
-import { sendGTMEvent } from '@next/third-parties/google'
 
 interface FormErrors {
   newPDFWidth?: string;
@@ -38,8 +36,6 @@ export default function Home() {
   const [newPDFBlob, setNewPDFBlob] = useState<Blob | null>(null);
   const [errorToastMessage, setErrorToastMessage] = useState<string>('');
   const [successToastMessage, setSuccessToastMessage] = useState<string>('');
-  const [reactDeviceInfo, setDeviceInfo] = useState<any>(null);
-  const [userInfo, setUserInfo] = useState<any>(null);
 
   // Memoize the onClose handler
   const closeToast = useCallback(() => setErrorToastMessage(''), []);
@@ -49,31 +45,6 @@ export default function Home() {
     const currentUrl = `https://cbz-to-kindle.vercel.app/`;
     logPageView(currentUrl);
   }, [logPageView]);
-
-  useEffect(() => {
-    const deviceInfo = getDeviceInfo();
-
-    if (deviceInfo) {
-      setDeviceInfo(deviceInfo)
-    }
-  }, [setDeviceInfo]);
-
-  useEffect(() => {
-    const getUserInfo = async () => {
-      try {
-        const response = await fetch("https://ipapi.co/json/");
-        const data = await response.json();
-  
-        if (data) {
-          setUserInfo(data);
-        }
-      } catch (error) {
-        console.error("Error fetching user info:", error);
-      }
-    };
-  
-    getUserInfo(); // Call the async function
-  }, [setUserInfo]);
 
   useEffect(() => {
     if (progress > 0 && progress < 100 && startTime) {
@@ -134,7 +105,7 @@ export default function Home() {
       setStartTime(Date.now()); // Record start time
       const pdfBlob = await convertCbzToPdf(file, setProgress, setErrorToastMessage, newPDFWidth, newPDFQuality);
       if (pdfBlob) {
-        recordGa({category: 'Interaction', action: 'Finish to uploaded test1212'})
+        recordGa({ category: 'Interaction', action: 'Finish to uploaded test1212' })
         setNewPDFBlob(pdfBlob)
         setSuccessToastMessage('File converted successfully :)')
       }
@@ -166,7 +137,7 @@ export default function Home() {
   return (
     <>
       <div className="relative flex items-center flex-col justify-center min-h-screen bg-gray-100" style={{
-        backgroundImage: "url('/assets/background-asset.jpg')",
+        backgroundImage: "url('https://d378pye9mzk55i.cloudfront.net/Image20241212182458.jpg')",
         backgroundSize: "contain",
       }}>
         <form
@@ -180,14 +151,7 @@ export default function Home() {
               className="inline-block text-xs text-blue-600 py-1 px-1 rounded-md transition duration-300 cursor-pointer mx-auto"
               onClick={() => {
                 setHint(true)
-                recordGa({category: 'Interaction', action: 'How to use test1212'})
-                try {
-                  sendGTMEvent({ event: 'How to use tagTest12', value: 'test?' })
-                  console.log('sendGTMEvent')
-
-                } catch (error) {
-                  console.log('sendGTMEvent error')
-                }
+                recordGa({ category: 'Interaction', action: 'How to use test1212' })
               }}
             >
               How to use?
@@ -278,7 +242,7 @@ export default function Home() {
                 onChange={handleFileChange}
                 className="hidden"
                 disabled={progress > 0 && progress < 99}
-                onClick={() => recordGa({category: 'Interaction', action: 'Choose File test1212'})}
+                onClick={() => recordGa({ category: 'Interaction', action: 'Choose File test1212' })}
               />
               <span id="fileName" className="ml-3 text-gray-500 text-sm truncate" title={file ? file.name : "No file chosen"}>
                 {file ? file.name : "No file chosen"}
@@ -293,7 +257,7 @@ export default function Home() {
             type="submit"
             className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-300"
             disabled={progress > 0 && progress < 99}
-            onClick={() => recordGa({category: 'Interaction', action: 'Convert test1212'})}
+            onClick={() => recordGa({ category: 'Interaction', action: 'Convert test1212' })}
           >
             Convert
           </button>

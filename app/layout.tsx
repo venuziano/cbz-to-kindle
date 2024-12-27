@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { GoogleTagManager } from '@next/third-parties/google'
+// import { useLocale } from 'next-intl';
 
 import "./globals.css";
 
@@ -20,8 +20,6 @@ export const metadata: Metadata = {
   description: "Convert any CBZ file to PDF to use in your Kindle device or do whatever you want! =D",
 };
 
-const GTM_TRACKING_ID = process.env.NEXT_PUBLIC_GOOGLE_TAG_MANAGER_ID;
-
 if (typeof window !== 'undefined' && window.__VERCEL_INSIGHTS__) {
   delete window.__VERCEL_INSIGHTS__;
 }
@@ -31,15 +29,16 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  // const locale = useLocale();
+
   return (
     <html lang="en">
-      <GoogleTagManager gtmId={GTM_TRACKING_ID as string} />
-        <body
-          className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-        >
-          
-          {children}
-        </body>
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
+        {children}
+      </body>
     </html>
   );
 }
+
