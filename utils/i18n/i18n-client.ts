@@ -19,11 +19,26 @@ import { initReactI18next } from 'react-i18next';
 // Dynamically import the correct common.json
 async function loadCommonNamespace(lang: string) {
   try {
-  console.log('lang loadCommonNamespace', lang)
-  console.log('string', `../../app/translations/${lang}/common.json`)
-  // Example path: /app/translations/en/common.json
-    const { default: common } = await import(`../../app/translations/${lang}/common.json`);
-    console.log('common', common)
+    let importResult;
+
+    switch (lang) {
+      case 'pt':
+        importResult = await import('../../app/translations/pt/common.json');
+        break;
+      case 'en':
+        importResult = await import('../../app/translations/en/common.json');
+        break;
+      // Add more languages as needed:
+      default:
+        // Fallback to English
+        importResult = await import('../../app/translations/en/common.json');
+        break;
+    }
+
+    // Extract the JSON content
+    const { default: common } = importResult;
+    console.log('Loaded common:', common);
+
     return { common };
   } catch (error) {
     console.log('error', error)
