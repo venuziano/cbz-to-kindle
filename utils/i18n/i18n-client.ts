@@ -21,6 +21,7 @@ async function loadCommonNamespace(lang: string) {
   try {
     // Example path: /app/translations/en/common.json
     const { default: common } = await import(`../../app/translations/pt/common.json`);
+    console.log('common', common)
     return { common };
   } catch (error) {
     console.log('error', error)
