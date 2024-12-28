@@ -19,8 +19,9 @@ import { initReactI18next } from 'react-i18next';
 // Dynamically import the correct common.json
 async function loadCommonNamespace(lang: string) {
   try {
-    // Example path: /app/translations/en/common.json
-    const { default: common } = await import(`../../app/translations/pt/common.json`);
+  console.log('lang loadCommonNamespace', lang)
+  // Example path: /app/translations/en/common.json
+    const { default: common } = await import(`../../app/translations/${lang}/common.json`);
     console.log('common', common)
     return { common };
   } catch (error) {
@@ -32,7 +33,7 @@ async function loadCommonNamespace(lang: string) {
 }
 
 export async function initI18n(lang: string) {
-  console.log('lang', lang)
+  console.log('lang initI18n', lang)
   const resources = await loadCommonNamespace(lang);
   console.log('resources', resources)
 
