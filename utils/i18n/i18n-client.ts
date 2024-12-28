@@ -31,6 +31,7 @@ async function loadCommonNamespace(lang: string) {
 }
 
 export async function initI18n(lang: string) {
+  console.log('lang', lang)
   const resources = await loadCommonNamespace(lang);
 
   // If i18n isn't initialized yet, do a full init
