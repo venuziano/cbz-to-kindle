@@ -22,8 +22,8 @@ async function loadCommonNamespace(lang: string) {
     // Example path: /app/translations/en/common.json
     const { default: common } = await import(`../../app/translations/${lang}/common.json`);
     return { common };
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
+    console.log('error', error)
     // If language folder doesn't exist, fallback to en
     const { default: common } = await import(`../../app/translations/en/common.json`);
     return { common };
