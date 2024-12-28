@@ -20,6 +20,7 @@ import { initReactI18next } from 'react-i18next';
 async function loadCommonNamespace(lang: string) {
   try {
   console.log('lang loadCommonNamespace', lang)
+  console.log('string', `../../app/translations/${lang}/common.json`)
   // Example path: /app/translations/en/common.json
     const { default: common } = await import(`../../app/translations/${lang}/common.json`);
     console.log('common', common)
