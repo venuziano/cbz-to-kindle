@@ -5,15 +5,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { PDFDocument } from 'pdf-lib';
 import JSZip from 'jszip';
-import ProgressBar from './main/ProgressBar';
-import ConversionComplete from './main/ConversionComplete';
-import FormHints from './main/FormHints';
 import { FcInfo } from "react-icons/fc";
 import { IoCloseCircle } from "react-icons/io5";
+import { useTranslation } from 'react-i18next';
+import { TFunction } from 'i18next';
+
 import ErrorToast from './main/ErrorToast';
 import SuccessToast from './main/SuccessToast';
 import Actions from './main/Actions';
+import FormHints from './main/FormHints';
+import ProgressBar from './main/ProgressBar';
+import ConversionComplete from './main/ConversionComplete';
 import { useGA } from '@/hooks/useGA';
+
 
 interface FormErrors {
   newPDFWidth?: string;
@@ -23,6 +27,7 @@ interface FormErrors {
 
 export default function Home() {
   const { logPageView, recordGa } = useGA();
+  const translation: TFunction = useTranslation('common').t;
 
   const [newPDFWidth, setNewPDFWidth] = useState<string>('1200');
   const [newPDFQuality, setNewPDFQuality] = useState<string>('72');
@@ -111,7 +116,7 @@ export default function Home() {
       }
     }
   };
-
+  
   const handleDownload = (): void => {
     const url = URL.createObjectURL(newPDFBlob as Blob);
 
@@ -146,7 +151,7 @@ export default function Home() {
         >
           <div className='text-center'>
             <h2 className="text-2xl font-bold text-gray-700">CBZ 2 PDF</h2>
-
+            <h1 className="text-2xl font-bold text-gray-700">{translation('hello')}</h1>
             <div
               className="inline-block text-xs text-blue-600 py-1 px-1 rounded-md transition duration-300 cursor-pointer mx-auto"
               onClick={() => {

@@ -6,25 +6,24 @@ import { useEffect, useState } from 'react';
 export default function DonateLink() {
   const { recordGa } = useGA();
 
-  const [userCountry, setUserCountry] = useState<string | null>(null);
+  const [donateLink, setDonateLink] = useState<string>('https://buymeacoffee.com/venuziano');
 
   const fetchUserCountry = async (): Promise<void> => {
     try {
       const response: Response = await fetch("https://api.ipify.org?format=json");
       const data = await response.json();
       const userIP: string = data.ip;
-      console.log('data', data)
+      
       const countryResponse: Response = await fetch(
         `https://ipapi.co/${userIP}/country/`,
         {
           method: 'GET',
         }
       );
-      console.log('countryResponse', countryResponse)
-      const country: string = await countryResponse.text();
-      console.log('country', country)
 
-      setUserCountry(country);
+      const country: string = await countryResponse.text();
+      
+      if (country === 'BR') setDonateLink('https://ko-fi.com/venuziano');
     } catch (error) {
       console.log('error', error)
     }
@@ -34,12 +33,9 @@ export default function DonateLink() {
     fetchUserCountry();
   }, []); // Fetch user country once when the component mounts
 
-  if (userCountry == null) return <></>
-
   return (
     <a
-      href={userCountry === 'BR' ? 'https://ko-fi.com/venuziano' : 'https://buymeacoffee.com/venuziano'}
-      // href="https://ko-fi.com/venuziano"
+      href={donateLink}
       target="_blank"
       rel="noopener noreferrer"
       className="flex items-center gap-2 bg-yellow-400 text-white p-3 rounded-lg shadow hover:bg-yellow-500 transition duration-300"
