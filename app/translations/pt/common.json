@@ -1,3 +1,20 @@
 {
-  "hello": "Bem vindo 2!"
+  "howToUse": "Como usar?",
+  "imageWidh": "Largura da imagem",
+  "imageQuality": "Qualidade da imagem",
+  "imagemQualityHint": "Insira um valor para a qualidade da imagem (por exemplo, 1–100).",
+  "uploadCbzFileInput": "Enviar arquivo CBZ",
+  "chooseFile": "Escolher arquivo",
+  "noFileChosen": "Nenhum arquivo selecionado",
+  "convert": "Converter",
+  "gitHub": "Visite meu GitHub",
+  "formHint": {
+    "firstSentence": "Configure as opções abaixo para gerar seu PDF. Para resultados ideais:",
+    "widthHint": "Recomendado <strong>1200px e 1400px</strong>.",
+    "imageQualityHint": "Recomendado entre <strong>60 e 80</strong>.",
+    "amazonNote": "Observação: a Amazon permite PDFs de até <strong>{{size}}</strong>. Ajuste suas configurações conforme necessário.",
+    "lastSentence": "Essas recomendações baseiam-se em meu uso pessoal e podem variar de acordo com suas necessidades e restrições específicas.",
+    "donwloadLabel": "Não tem um arquivo CBZ para testar?",
+    "downloadButtonLabel": "Clique aqui para baixar um arquivo de teste"
+  }
 }

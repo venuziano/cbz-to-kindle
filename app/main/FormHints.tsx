@@ -1,39 +1,53 @@
 "use client";
 import React from 'react';
 import { useGA } from '@/hooks/useGA';
+import { TFunction } from 'i18next';
+import { Trans, useTranslation } from 'react-i18next';
 
 export default function FormHints() {
   const { recordGa } = useGA();
-  
+  const translation: TFunction = useTranslation('common').t;
+
   return (
     <div className="p-4 bg-gray-100 rounded-md border border-gray-300 shadow-sm">
       <p className="text-sm text-gray-700 mb-4">
-        Configure the settings below to generate your PDF. For optimal results:
+        {translation("formHint.firstSentence")}
       </p>
       <ul className="list-disc pl-5 text-sm text-gray-700 mb-4">
-        <li><strong>Max Width:</strong> Recommended between <span className="font-semibold">1200px and 1400px</span>.</li>
-        <li><strong>Image Quality:</strong> Recommended between <span className="font-semibold">60 and 80</span>.</li>
+        <li>
+          <strong>{translation("imageWidh")}:</strong> 
+          <Trans i18nKey="formHint.widthHint">
+            Recommended between <span className="font-semibold">1200px and 1400px</span>
+          </Trans>
+        </li>
+
+        <li>
+          <strong>{translation("imageQuality")}:</strong> 
+          <Trans i18nKey="formHint.imageQualityHint">
+            Recommended between <span className="font-semibold">60 and 80</span>
+          </Trans>
+        </li>
       </ul>
       <p className="text-sm text-red-600">
-        Note: Amazon only allows PDFs up to <strong>200MB</strong>. Adjust your settings accordingly.
+        <Trans i18nKey="formHint.amazonNote" values={{ size: "200MB" }} />
       </p>
       <p className="text-sm text-gray-500 italic mt-2">
-        These recommendations are based on my personal usage and may vary depending on your specific requirements and constraints.
+        {translation("formHint.lastSentence")}
       </p>
-      <div 
+      <div
         className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-300 shadow-md"
-        onClick={() => recordGa({category: 'Interaction', action: 'Test file downloaded test1212'})}
+        onClick={() => recordGa({ category: 'Interaction', action: 'Test file downloaded test1212' })}
       >
         <p className="text-sm text-gray-700 font-medium mb-2">
-          Don’t have a CBZ file to test?
+          {translation("formHint.donwloadLabel")}
         </p>
         <a
           href="https://d378pye9mzk55i.cloudfront.net/cbz-file-test.cbz"
           download
           className="inline-block px-4 py-2 bg-blue-500 text-white font-bold text-sm rounded-md shadow hover:bg-blue-600 transition-all">
-          Click Here to Download a Test File
+          {translation("formHint.downloadButtonLabel")}
         </a>
       </div>
-    </div>
+    </div >
   );
 }

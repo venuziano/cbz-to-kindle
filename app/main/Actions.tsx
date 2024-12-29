@@ -3,7 +3,6 @@ import DonateLink from './DonateLink';
 
 interface IActionsProperties {
   customClassName?: string
-
 }
 
 export default function Actions({ customClassName }: IActionsProperties) {

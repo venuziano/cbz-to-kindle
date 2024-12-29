@@ -151,7 +151,6 @@ export default function Home() {
         >
           <div className='text-center'>
             <h2 className="text-2xl font-bold text-gray-700">CBZ 2 PDF</h2>
-            <h1 className="text-2xl font-bold text-gray-700">{translation('hello')}</h1>
             <div
               className="inline-block text-xs text-blue-600 py-1 px-1 rounded-md transition duration-300 cursor-pointer mx-auto"
               onClick={() => {
@@ -159,7 +158,7 @@ export default function Home() {
                 recordGa({ category: 'Interaction', action: 'How to use test1212' })
               }}
             >
-              How to use?
+              {translation('howToUse')}
             </div>
           </div>
 
@@ -173,7 +172,7 @@ export default function Home() {
               >
                 <button
                   className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 transition duration-300"
-                  onClick={() => setHint(false)}
+                  // onClick={() => setHint(false)}
                   aria-label="Close modal"
                 >
                   <IoCloseCircle />
@@ -187,7 +186,7 @@ export default function Home() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 mt-4">
             {/* Image Width Field */}
             <div>
-              <label className="block text-gray-700">Image Width</label>
+              <label className="block text-gray-700">{translation('imageWidh')}</label>
               <input
                 type="number"
                 value={newPDFWidth}
@@ -206,11 +205,11 @@ export default function Home() {
             {/* Image Quality Field */}
             <div>
               <div className="flex items-center">
-                <label className="block text-gray-700">Image Quality</label>
+                <label className="block text-gray-700">{translation('imageQuality')}</label>
                 <div className="relative group ml-2 cursor-pointer">
                   <FcInfo />
                   <div className="absolute left-0 -top-10 hidden w-48 p-2 text-sm text-white bg-black rounded-md shadow-lg group-hover:block">
-                    Enter a value for the quality of the image (e.g., 1–100).
+                    {translation('imagemQualityHint')}
                   </div>
                 </div>
               </div>
@@ -231,14 +230,14 @@ export default function Home() {
           </div>
 
           <div className="mb-6">
-            <label className="block text-gray-700 font-medium mb-2">Upload CBZ File</label>
+            <label className="block text-gray-700 font-medium mb-2">{translation('uploadCbzFileInput')}</label>
             <div className="flex items-center">
               <label
                 htmlFor="fileInput"
                 className="cursor-pointer inline-block px-4 py-2 bg-indigo-500 text-white font-semibold rounded-md shadow-sm hover:bg-indigo-600 focus:ring focus:ring-indigo-300 focus:outline-none"
                 style={{ minWidth: 123 }}
               >
-                Choose File
+                {translation('chooseFile')}
               </label>
               <input
                 id="fileInput"
@@ -250,7 +249,7 @@ export default function Home() {
                 onClick={() => recordGa({ category: 'Interaction', action: 'Choose File test1212' })}
               />
               <span id="fileName" className="ml-3 text-gray-500 text-sm truncate" title={file ? file.name : "No file chosen"}>
-                {file ? file.name : "No file chosen"}
+                {file ? file.name : `${translation("noFileChosen")}`}
               </span>
             </div>
             {errors.file && (
@@ -264,7 +263,7 @@ export default function Home() {
             disabled={progress > 0 && progress < 99}
             onClick={() => recordGa({ category: 'Interaction', action: 'Convert test1212' })}
           >
-            Convert
+            {translation('convert')}
           </button>
 
           <ProgressBar progress={progress} eta={eta} />
