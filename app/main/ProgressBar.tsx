@@ -1,5 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
+import { TFunction } from "i18next";
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 interface IProgressBarProperties {
   progress: number,
@@ -7,6 +9,8 @@ interface IProgressBarProperties {
 }
 
 function ProgressBar({ progress, eta }: IProgressBarProperties) {
+  const translation: TFunction = useTranslation('common').t;
+
   const [showWarning, setShowWarning] = useState<boolean>(false);
 
   useEffect(() => {
@@ -23,7 +27,7 @@ function ProgressBar({ progress, eta }: IProgressBarProperties) {
   return (
     <>
       {progress > 0 && (
-        <p className="text-gray-700 mt-4">Converting: {Math.round(progress)}% - ETA: {eta}</p>
+        <p className="text-gray-700 mt-4">{translation("progressBar.converting")} {Math.round(progress)}% - {translation("progressBar.eta")} {eta}</p>
       )}
 
       {progress > 0 && progress < 100 && (
@@ -37,7 +41,7 @@ function ProgressBar({ progress, eta }: IProgressBarProperties) {
             </div>
             {showWarning && (
               <div className="mt-2 p-2 bg-yellow-300 text-gray-800 rounded shadow-md min-w-[221px]">
-                🚀 You're halfway there! Hang tight, we're still converting.
+                🚀 {translation("progressBar.halfway")}
               </div>
             )}
           </div>

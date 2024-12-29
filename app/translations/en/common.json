@@ -8,6 +8,21 @@
   "noFileChosen": "No file choosen",
   "convert": "Convert",
   "gitHub": "Visit My Github",
+  "imageWidthRequired": "Image Width is required",
+  "imageWidthQualityRequired": "Image Quality is required",
+  "chooseFileRequired": "Please select a CBZ file",
+  "onlyCbzAllowed": "Only CBZ files are allowed",
+  "mustBeValidNumber": "Must be a valid number",
+  "fileConvertedSuccessfuly": "File converted successfully :)",
+  "conversionComplete": {
+    "clickHere": "Click here",
+    "toDownloadYourKindleFileText": "to download your Kindle file."
+  },
+  "progressBar": {
+    "converting": "Converting: ",
+    "eta": "ETA: ",
+    "halfway": "You're halfway there! Hang tight, we're still converting."
+  },
   "formHint": {
     "firstSentence": "Configure the settings below to generate your PDF. For optimal results:",
     "widthHint": " Recommended <strong>1200px and 1400px</strong>.",

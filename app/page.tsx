@@ -78,27 +78,27 @@ export default function Home() {
 
     // Validate first number
     if (!newPDFWidth) {
-      formErrors.newPDFWidth = 'Image Width is required';
+      formErrors.newPDFWidth = translation('imageWidthRequired');
     } else if (isNaN(Number(newPDFWidth))) {
-      formErrors.newPDFWidth = 'Must be a valid number';
+      formErrors.newPDFWidth = translation('mustBeValidNumber');
     }
 
     // Validate second number
     if (!newPDFQuality) {
-      formErrors.newPDFQuality = 'Image Quality is required';
+      formErrors.newPDFQuality = translation('imageWidthQualityRequired');
     } else if (isNaN(Number(newPDFQuality))) {
-      formErrors.newPDFQuality = 'Must be a valid number';
+      formErrors.newPDFQuality = translation('mustBeValidNumber');
     }
 
     // Validate file input
     if (!file) {
-      formErrors.file = 'Please select a CBZ file';
+      formErrors.file = translation('chooseFileRequired');
     } else {
       const allowedExtensions = ['cbz'];
       const fileExtension = file.name.split('.').pop()?.toLowerCase();
 
       if (!allowedExtensions.includes(fileExtension || '')) {
-        formErrors.file = 'Only CBZ files are allowed';
+        formErrors.file = translation('onlyCbzAllowed');
       }
     }
 
@@ -112,7 +112,7 @@ export default function Home() {
       if (pdfBlob) {
         recordGa({ category: 'Interaction', action: 'Finish to uploaded test1212' })
         setNewPDFBlob(pdfBlob)
-        setSuccessToastMessage('File converted successfully :)')
+        setSuccessToastMessage(translation('fileConvertedSuccessfuly'))
       }
     }
   };
@@ -172,7 +172,6 @@ export default function Home() {
               >
                 <button
                   className="absolute top-2 right-2 text-gray-400 hover:text-gray-600 transition duration-300"
-                  // onClick={() => setHint(false)}
                   aria-label="Close modal"
                 >
                   <IoCloseCircle />

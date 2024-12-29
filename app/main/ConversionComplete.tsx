@@ -1,5 +1,7 @@
 import { useGA } from "@/hooks/useGA";
+import { TFunction } from "i18next";
 import React, { useState, useEffect } from "react";
+import { useTranslation } from "react-i18next";
 import { FcApproval } from "react-icons/fc";
 
 interface IConversionCompleteProperties {
@@ -9,6 +11,7 @@ interface IConversionCompleteProperties {
 
 function ConversionComplete({ progress, handleDownloadFile }: IConversionCompleteProperties) {
     const { recordGa } = useGA();
+    const translation: TFunction = useTranslation('common').t;
   
     const [showDownload, setShowDownload] = useState(true);
 
@@ -33,9 +36,9 @@ function ConversionComplete({ progress, handleDownloadFile }: IConversionComplet
                 className="text-blue-700 underline font-semibold whitespace-nowrap cursor-pointer"
                 onClick={() => { handleDownloadFile(); recordGa({category: 'Interaction', action: 'File Downloaded test1212'}) }}
               >
-                Click here
+                {translation("conversionComplete.clickHere")}
               </a>
-              <span className="whitespace-normal sm:whitespace-nowrap">to download your Kindle file.</span>
+              <span className="whitespace-normal sm:whitespace-nowrap">{translation("conversionComplete.toDownloadYourKindleFileText")}</span>
             </div>
           )}
         </div>
