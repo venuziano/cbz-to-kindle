@@ -1,2 +1,3 @@
 User-agent: *
 Allow: /
+Sitemap: https://www.cbz-to-pdf.com.br/sitemap.xml
