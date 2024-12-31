@@ -23,9 +23,12 @@ export const metadata: Metadata = {
   description: "Convert any CBZ file to PDF (CBZ to PDF) to use in your Kindle device or do whatever you want.",
   keywords: ["cbz", "pdf", "convert", "kindle", "manga", "comics", "to", "converter", "convert", "anime", "how to", "book"],
   icons: {
-    icon: '/favicon.ico',
-    shortcut: '/favicon.ico',
-    apple: '/apple-touch-icon.png',
+    icon: [
+      { rel: 'icon', type: 'image/x-icon', url: '/favicon.ico' }, // Classic Favicon
+      { rel: 'icon', type: 'image/svg+xml', url: '/favicon.svg' }, // SVG Favicon
+      { rel: 'icon', type: 'image/png', url: '/favicon-512x512.png', sizes: '512x512' }, // Desktop PNG
+    ],
+    apple: '/apple-touch-icon.png', // Apple Touch Icon
   },
   openGraph: {
     title: "CBZ 2 PDF Converter",
