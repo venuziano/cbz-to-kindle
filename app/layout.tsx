@@ -18,8 +18,25 @@ const geistMono = localFont({
 });
 
 export const metadata: Metadata = {
-  title: "CBZ 2 PDF",
-  description: "Convert any CBZ file to PDF to use in your Kindle device or do whatever you want! =D",
+  title: "CBZ 2 PDF Converter",
+  description: "Convert any CBZ file to PDF (CBZ to PDF) to use in your Kindle device or do whatever you want! =D",
+  keywords: ["cbz", "pdf", "convert", "kindle", "manga", "comics", "to", "converter", "convert", "anime"],
+  openGraph: {
+    title: "CBZ 2 PDF Converter",
+    description: "Easily convert your CBZ files to PDF format for Kindle or other e-readers.",
+    url: "https://www.cbz-to-pdf.com.br/",
+    siteName: "CBZ 2 PDF",
+    images: [
+      {
+        url: "https://d378pye9mzk55i.cloudfront.net/Image20241212182458.jpg",
+        width: 1200,
+        height: 630,
+        alt: "CBZ 2 PDF Converter Preview",
+      },
+    ],
+    locale: "en_US",
+    type: "website",
+  },
 };
 
 export default async function RootLayout({
