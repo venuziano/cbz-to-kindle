@@ -1,6 +1,6 @@
 {
-  "name": "MyWebSite",
-  "short_name": "MySite",
+  "name": "Convert CBZ to PDF",
+  "short_name": "CBZ 2 PDF",
   "icons": [
     {
       "src": "/web-app-manifest-192x192.png",
