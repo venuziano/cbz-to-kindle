@@ -17,7 +17,7 @@
   "fileSizeExceeded": "You can upload a file up to 1GB in size",
   "conversionComplete": {
     "clickHere": "Click here",
-    "toDownloadYourKindleFileText": "to download your Kindle file."
+    "toDownloadYourKindleFileText": "to download your PDF file."
   },
   "progressBar": {
     "converting": "Converting: ",

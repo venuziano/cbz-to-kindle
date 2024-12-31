@@ -17,7 +17,7 @@
   "fileSizeExceeded": "O arquivo não deve exceder o limite de 1GB",
   "conversionComplete": {
     "clickHere": "Clique aqui",
-    "toDownloadYourKindleFileText": "para baixar seu arquivo Kindle."
+    "toDownloadYourKindleFileText": "para baixar seu arquivo PDF."
   },
   "progressBar": {
     "converting": "Convertendo: ",
