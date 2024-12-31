@@ -96,9 +96,12 @@ export default function Home() {
     } else {
       const allowedExtensions = ['cbz'];
       const fileExtension = file.name.split('.').pop()?.toLowerCase();
+      const maxFileSizeInBytes = 1 * 1024 * 1024 * 1024; // 1GB in bytes
 
       if (!allowedExtensions.includes(fileExtension || '')) {
         formErrors.file = translation('onlyCbzAllowed');
+      } else if (file.size > maxFileSizeInBytes) {
+        formErrors.file = translation('fileSizeExceeded');
       }
     }
 

@@ -14,6 +14,7 @@
   "onlyCbzAllowed": "Only CBZ files are allowed",
   "mustBeValidNumber": "Must be a valid number",
   "fileConvertedSuccessfuly": "File converted successfully :)",
+  "fileSizeExceeded": "You can upload a file up to 1GB in size",
   "conversionComplete": {
     "clickHere": "Click here",
     "toDownloadYourKindleFileText": "to download your Kindle file."
