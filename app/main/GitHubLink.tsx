@@ -13,7 +13,7 @@ export default function GitHubLink({ customClassName }: IGitHubLinkProperties) {
 
   return (
     <div 
-      className={`flex flex-col justify-center items-center bg-white rounded-lg shadow-lg p-2 ${customClassName}`}
+      className={`md:ml-2 mt-2 md:mt-0 flex flex-col justify-center items-center bg-white rounded-lg shadow-lg p-2 ${customClassName}`}
       onClick={() => recordGa({category: 'Interaction', action: 'Github test1212'})}
     >
       <a

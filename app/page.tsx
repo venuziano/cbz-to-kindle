@@ -115,6 +115,11 @@ export default function Home() {
       setStartTime(Date.now()); // Record start time
       const pdfBlob = await convertCbzToPdf(file, setProgress, setErrorToastMessage, newPDFWidth, newPDFQuality);
       if (pdfBlob) {
+        window.scrollTo({
+          top: document.body.scrollHeight,
+          behavior: 'smooth',
+        });
+
         recordGa({ category: 'Interaction', action: 'Finish to uploaded test1212' })
         setNewPDFBlob(pdfBlob)
         setSuccessToastMessage(translation('fileConvertedSuccessfuly'))
@@ -284,7 +289,7 @@ export default function Home() {
           <ConversionComplete progress={progress} handleDownloadFile={handleDownload} />
         </form>
 
-        <Actions customClassName="absolute bottom-4" />
+        <Actions customClassName="flex flex-col md:flex-row absolute bottom-4" />
 
         <ErrorToast message={errorToastMessage} onClose={closeToast} />
         <SuccessToast message={successToastMessage} onClose={successToast} />
