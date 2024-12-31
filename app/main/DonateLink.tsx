@@ -66,16 +66,37 @@ export default function DonateLink() {
     { id: 'icon-3', icon: FaHeart, color: '#ff3860', delay: 0.8 },
   ];
 
-  const fetchUserCountry = async () => {
-    try {
-      const response: Response = await fetch('/api/getCountry');
-      const data = await response.json();
+  // const fetchUserCountry = async () => {
+  //   try {
+  //     const response = await fetch('/api/getCountry');
+  //     const data = await response.json();
 
-      if (data.country === 'BR') {
-        setDonateLink('https://ko-fi.com/venuziano');
-      }
+  //     if (data.country === 'BR') {
+  //       setDonateLink('https://ko-fi.com/venuziano');
+  //     }
+  //   } catch (error) {
+  //     console.error('Error fetching country from route:', error);
+  //   }
+  // };
+
+  const fetchUserCountry = async (): Promise<void> => {
+    try {
+      const response: Response = await fetch("https://api.ipify.org?format=json");
+      const data = await response.json();
+      const userIP: string = data.ip;
+
+      const countryResponse: Response = await fetch(
+        `https://ipapi.co/${userIP}/country/`,
+        {
+          method: 'GET',
+        }
+      );
+
+      const country: string = await countryResponse.text();
+
+      if (country === 'BR') setDonateLink('https://ko-fi.com/venuziano');
     } catch (error) {
-      console.error('Error fetching country from route:', error);
+      console.log('error', error)
     }
   };
 
