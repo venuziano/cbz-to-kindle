@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
+import * as Sentry from "@sentry/nextjs";
 
 export async function GET(req: NextRequest) {
   try {
@@ -10,6 +11,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ country, userIP });
   } catch (error) {
+    // Sentry.captureException(error)
     console.error('Error in GET /api/getCountry:', error);
     return NextResponse.json({ error: 'Failed to get user country' }, { status: 500 });
   }

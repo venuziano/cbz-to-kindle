@@ -57,12 +57,11 @@ export default async function RootLayout({
   const requestHeaders = await headers();
   const acceptLanguage = requestHeaders.get('accept-language') || 'en';
   const userLanguage = acceptLanguage.split(',')[0] || 'en';
-  
+
   return (
     <html lang={userLanguage}>
       <head>
         <SeoStructuredData />
-
         <meta name="apple-mobile-web-app-title" content="CBZ 2 PDF" />
       </head>
 

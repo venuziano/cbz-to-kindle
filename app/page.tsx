@@ -9,6 +9,7 @@ import { FcInfo } from "react-icons/fc";
 import { IoCloseCircle } from "react-icons/io5";
 import { useTranslation } from 'react-i18next';
 import { TFunction } from 'i18next';
+import * as Sentry from "@sentry/nextjs";
 
 import ErrorToast from './main/ErrorToast';
 import SuccessToast from './main/SuccessToast';
@@ -17,7 +18,6 @@ import FormHints from './main/FormHints';
 import ProgressBar from './main/ProgressBar';
 import ConversionComplete from './main/ConversionComplete';
 import { useGA } from '@/hooks/useGA';
-
 
 interface FormErrors {
   newPDFWidth?: string;
@@ -65,7 +65,7 @@ export default function Home() {
       setEta(null); // Reset ETA when done
     }
   }, [progress, startTime]);
-
+  
   useEffect(() => {
     if (progress >= 50 && !showWarning) {
       setShowWarning(true);
@@ -106,7 +106,7 @@ export default function Home() {
     }
 
     setErrors(formErrors);
-
+    
     // Submit form if no errors
     if (Object.keys(formErrors).length === 0 && file) {
       recordGa({ category: 'Interaction', action: 'Convert test1212' })
@@ -337,10 +337,8 @@ async function convertCbzToPdf(
   imageQuality: string
 ): Promise<Blob | null> {
   try {
-    // console.log('xx')
-    // console.log('file', file)
-
-    const fileSizeGB = file.size / (1024 * 1024)
+    throw new Error('55xx55')
+    // const fileSizeGB = file.size / (1024 * 1024)
     // const arrayBuffer = fileSizeGB > MAX_ARRAYBUFFER_SIZE_GB ? await streamToBlob(file) : await file.arrayBuffer();
     const arrayBuffer = await file.arrayBuffer()
     // console.log('arrayBuffer', arrayBuffer)
@@ -403,7 +401,7 @@ async function convertCbzToPdf(
 
     return pdfBlob;
   } catch (err) {
-    console.error('An error occurred:', err);
+    Sentry.captureException(err)
     setErrorToastMessage('An unexpected error happened :('); // Trigger the toast with the error message
     return null;
   }
