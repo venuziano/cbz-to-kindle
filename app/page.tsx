@@ -106,6 +106,8 @@ export default function Home() {
 
     // Submit form if no errors
     if (Object.keys(formErrors).length === 0 && file) {
+      recordGa({ category: 'Interaction', action: 'Convert test1212' })
+
       setProgress(0);
       setStartTime(Date.now()); // Record start time
       const pdfBlob = await convertCbzToPdf(file, setProgress, setErrorToastMessage, newPDFWidth, newPDFQuality);
@@ -271,7 +273,6 @@ export default function Home() {
             type="submit"
             className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-300"
             disabled={progress > 0 && progress < 99}
-            onClick={() => recordGa({ category: 'Interaction', action: 'Convert test1212' })}
           >
             {translation('convert')}
           </button>
