@@ -3,6 +3,7 @@ import localFont from "next/font/local";
 import { headers } from 'next/headers';
 
 import I18nClientWrapper from "@/utils/i18n/i18n-wrapper";
+import SeoStructuredData from "@/utils/SeoStructuredData";
 
 import "./globals.css";
 
@@ -19,7 +20,7 @@ const geistMono = localFont({
 
 export const metadata: Metadata = {
   title: "CBZ 2 PDF Converter",
-  description: "Convert any CBZ file to PDF (CBZ to PDF) to use in your Kindle device or do whatever you want! =D",
+  description: "Convert any CBZ file to PDF (CBZ to PDF) to use in your Kindle device or do whatever you want.",
   keywords: ["cbz", "pdf", "convert", "kindle", "manga", "comics", "to", "converter", "convert", "anime"],
   openGraph: {
     title: "CBZ 2 PDF Converter",
@@ -50,6 +51,10 @@ export default async function RootLayout({
   
   return (
     <html lang={userLanguage}>
+      <head>
+        <SeoStructuredData />
+      </head>
+
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

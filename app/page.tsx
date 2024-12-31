@@ -150,7 +150,6 @@ export default function Home() {
           onSubmit={handleSubmit}
         >
           <div className='text-center'>
-            {/* <h2 className="text-2xl font-bold text-gray-700">CBZ 2 PDF</h2> */}
             <h1 className="text-3xl font-bold text-gray-700">Convert CBZ to PDF</h1>
             
             {/* A short h2 and paragraph for extra SEO context. */}
