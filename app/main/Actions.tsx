@@ -8,8 +8,8 @@ interface IActionsProperties {
 export default function Actions({ customClassName }: IActionsProperties) {
   return (
     <div className={`justify-center items-center bg-white rounded-lg shadow-lg p-2 ${customClassName}`}>
-      <DonateLink />
       <GitHubLink />
+      <DonateLink />
     </div>
   )
 }
