@@ -289,7 +289,7 @@ export default function Home() {
           <ConversionComplete progress={progress} handleDownloadFile={handleDownload} />
         </form>
 
-        <Actions customClassName="flex flex-col md:flex-row absolute bottom-4" />
+        <Actions customClassName="flex flex-col md:flex-row md:mt-0 mt-6 md:absolute bottom-4" />
 
         <ErrorToast message={errorToastMessage} onClose={closeToast} />
         <SuccessToast message={successToastMessage} onClose={successToast} />
