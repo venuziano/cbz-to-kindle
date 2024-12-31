@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server';
 
-const SENTRY_URL = process.env.NEXT_PUBLIC_SENTRY_URL!;
+const SENTRY_URL = process.env.NEXT_PUBLIC_INTERNAL_SENTRY_URL!;
 
 export async function POST(req: NextRequest) {
   const body = await req.text();
