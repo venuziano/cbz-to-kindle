@@ -21,7 +21,12 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "CBZ 2 PDF Converter",
   description: "Convert any CBZ file to PDF (CBZ to PDF) to use in your Kindle device or do whatever you want.",
-  keywords: ["cbz", "pdf", "convert", "kindle", "manga", "comics", "to", "converter", "convert", "anime"],
+  keywords: ["cbz", "pdf", "convert", "kindle", "manga", "comics", "to", "converter", "convert", "anime", "how to", "book"],
+  icons: {
+    icon: '/favicon.ico',
+    shortcut: '/favicon.ico',
+    apple: '/apple-touch-icon.png',
+  },
   openGraph: {
     title: "CBZ 2 PDF Converter",
     description: "Easily convert your CBZ files to PDF format for Kindle or other e-readers.",
@@ -53,6 +58,8 @@ export default async function RootLayout({
     <html lang={userLanguage}>
       <head>
         <SeoStructuredData />
+
+        <meta name="apple-mobile-web-app-title" content="CBZ 2 PDF" />
       </head>
 
       <body
