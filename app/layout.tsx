@@ -21,6 +21,9 @@ const geistMono = localFont({
 export const metadata: Metadata = {
   title: "CBZ 2 PDF Converter",
   description: "Convert any CBZ file to PDF (CBZ to PDF) to use in your Kindle device or do whatever you want.",
+  alternates: {
+    canonical: "https://www.cbz-to-pdf.com.br/",
+  },
   keywords: ["cbz", "pdf", "convert", "kindle", "manga", "comics", "to", "converter", "convert", "anime", "how to", "book"],
   icons: {
     icon: [
