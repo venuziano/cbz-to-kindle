@@ -9,11 +9,6 @@ const SeoStructuredData = () => {
     "name": "Converter CBZ 2 PDF",
     "url": "https://www.cbz-to-pdf.com.br/",
     "description": "Convert any CBZ file to PDF (CBZ to PDF) to use in your Kindle device or do whatever you want.",
-    "potentialAction": {
-      "@type": "SearchAction",
-      "target": "https://www.cbz-to-pdf.com.br/?q={search_term_string}",
-      "query-input": "required name=search_term_string"
-    },
     "publisher": {
       "@type": "Organization",
       "name": "Non-profit Individual",
