@@ -170,6 +170,7 @@ export default function Home() {
             <p className="sr-only">
               This tool helps you quickly transform CBZ files into PDFs for your Kindle device or any other e-reader.
               No installation required — everything happens in your browser!
+              CBZ to PDF Converter - Free Online Tool
             </p>
            
             <div
