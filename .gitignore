@@ -40,6 +40,7 @@ yarn-error.log*
 next-env.d.ts
 
 # others
-# sitemap.xml
+utils/python-script/pyenv/
+
 # Sentry Config File
 .env.sentry-build-plugin
