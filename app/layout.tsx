@@ -24,7 +24,7 @@ export const metadata: Metadata = {
   alternates: {
     canonical: "https://www.cbz-to-pdf.com.br/",
   },
-  keywords: ["cbz", "pdf", "convert", "kindle", "manga", "comics", "to", "converter", "convert", "anime", "how to", "book"],
+  keywords: ["cbz", "pdf", "convert", "kindle", "manga", "comics", "to", "converter", "convert", "anime", "how to", "book", "convert cbz to pdf", "cbz to pdf", "how to convert cbz to pdf", "cbz to pdf tool", "tool", "CBZ to PDF Converter - Free Online Tool", "free"],
   icons: {
     icon: [
       { rel: 'icon', type: 'image/x-icon', url: '/favicon.ico' }, // Classic Favicon
