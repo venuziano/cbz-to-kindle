@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import { useGA } from '@/hooks/useGA';
 import { useEffect, useMemo, useState } from 'react';
 import { IconType } from 'react-icons';
+import * as Sentry from "@sentry/nextjs";
 
 interface IFloatingEmoji {
   Emoji: IconType,
@@ -75,6 +76,7 @@ export default function DonateLink() {
         setDonateLink('https://ko-fi.com/venuziano');
       }
     } catch (error) {
+      Sentry.captureException(error)
       console.error('Error fetching country from route:', error);
     }
   };

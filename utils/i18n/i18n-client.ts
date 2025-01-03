@@ -2,12 +2,13 @@
 
 import i18n from 'i18next';
 import { initReactI18next } from 'react-i18next';
+import * as Sentry from "@sentry/nextjs";
 
 // Dynamically import the correct common.json
 async function loadCommonNamespace(lang: string) {
   try {
     let importResult;
-
+    throw new Error('language 2')
     switch (lang) {
       case 'pt':
         importResult = await import('../../app/translations/pt/common.json');
@@ -26,7 +27,7 @@ async function loadCommonNamespace(lang: string) {
 
     return { common };
   } catch (error) {
-    console.log('error', error)
+    Sentry.captureException(error)
     // If language folder doesn't exist, fallback to en
     const { default: common } = await import(`../../app/translations/en/common.json`);
     return { common };

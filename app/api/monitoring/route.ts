@@ -23,14 +23,12 @@ export async function POST(req: NextRequest) {
     filteredHeaders.delete("Cookie");
   }
 
-  console.log('call')
   // Proxy the request to Sentry
   const response = await fetch(SENTRY_URL, {
     method: "POST",
     body,
     headers: filteredHeaders,
   });
-  console.log('response', response)
 
   return new NextResponse(response.body, {
     headers: response.headers,

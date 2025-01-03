@@ -338,7 +338,6 @@ async function convertCbzToPdf(
   imageQuality: string
 ): Promise<Blob | null> {
   try {
-    // throw new Error('66xx66')
     // const fileSizeGB = file.size / (1024 * 1024)
     // const arrayBuffer = fileSizeGB > MAX_ARRAYBUFFER_SIZE_GB ? await streamToBlob(file) : await file.arrayBuffer();
     const arrayBuffer = await file.arrayBuffer()

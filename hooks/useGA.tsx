@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { useEffect } from "react";
 import ReactGA from "react-ga4";
+import * as Sentry from "@sentry/nextjs";
 
 export interface IRecordGAReturnProperties {
   category: string
@@ -35,6 +36,7 @@ export const useGA = () => {
 
       console.log('recordGa', category, action)
     } catch (error) {
+      Sentry.captureException(error)
       console.log('error logEvent', error)
     }
   };
