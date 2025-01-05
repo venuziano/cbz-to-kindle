@@ -26,8 +26,7 @@
     },
     {
       "src": "/favicon.ico",
-      "sizes": "64x64",
-      "type": "image/x-icon"
+      "type": "image/vnd.microsoft.icon"
     }
   ],
   "theme_color": "#ffffff",
