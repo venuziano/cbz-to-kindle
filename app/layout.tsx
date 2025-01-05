@@ -27,8 +27,9 @@ export const metadata: Metadata = {
   keywords: ["cbz", "pdf", "convert", "kindle", "manga", "comics", "to", "converter", "convert", "anime", "how to", "book", "convert cbz to pdf", "cbz to pdf", "how to convert cbz to pdf", "cbz to pdf tool", "tool", "CBZ to PDF Converter - Free Online Tool", "free"],
   icons: {
     icon: [
-      { rel: 'icon', type: 'image/x-icon', url: '/favicon.ico' }, // Classic Favicon
-      { rel: 'icon', type: 'image/svg+xml', url: '/favicon.svg' }, // SVG Favicon
+      { rel: 'icon', type: 'image/x-icon', url: '/favicon.ico?v=2', sizes:"32x32" }, // Classic Favicon
+      { rel: 'icon', type: 'image/x-icon', url: '/favicon.ico?v=2', sizes:"16x16" }, // Classic Favicon
+      { rel: 'icon', type: 'image/svg+xml', url: '/favicon.svg?v=2' }, // SVG Favicon
       { rel: 'icon', type: 'image/png', url: '/favicon-96x96.png', sizes: '96x96' }, // Desktop PNG
     ],
     apple: '/apple-touch-icon.png', // Apple Touch Icon
