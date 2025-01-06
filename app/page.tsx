@@ -160,19 +160,24 @@ export default function Home() {
           onSubmit={handleSubmit}
         >
           <div className='text-center'>
-            <h1 className="text-3xl font-bold text-gray-700">Convert CBZ to PDF</h1>
+            <h1 className="sr-only">Convert CBZ to PDF</h1>
+            <h3 className="sr-only">Converter CBZ para PDF</h3>
+            <h1 className="text-3xl font-bold text-gray-700">{translation('toolTitle')}</h1>
             
             {/* A short h2 and paragraph for extra SEO context. */}
             <h2 className="sr-only">
-              The Easiest Way to Convert Your Comic Book Files (CBZ) to PDF
+              The Easiest Way to Convert Your Comic Book Files (CBZ) to PDF. CBZ to PDF Converter - Free Online Tool
             </h2>
             
             <p className="sr-only">
               This tool helps you quickly transform CBZ files into PDFs for your Kindle device or any other e-reader.
               No installation required — everything happens in your browser!
-              CBZ to PDF Converter - Free Online Tool
             </p>
            
+            <p className="text-xs font-bold text-gray-700 mt-4">
+              {translation('toolDescription')}
+            </p>
+
             <div
               className="inline-block text-xs text-blue-600 py-1 px-1 rounded-md transition duration-300 cursor-pointer mx-auto"
               onClick={() => {

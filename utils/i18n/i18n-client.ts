@@ -8,7 +8,7 @@ import * as Sentry from "@sentry/nextjs";
 async function loadCommonNamespace(lang: string) {
   try {
     let importResult;
-    throw new Error('language 2')
+    
     switch (lang) {
       case 'pt':
         importResult = await import('../../app/translations/pt/common.json');

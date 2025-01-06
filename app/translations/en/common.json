@@ -1,4 +1,5 @@
 {
+  "toolTitle": "Convert CBZ to PDF",
   "howToUse": "How to Use?",
   "imageWidh": "Image Width",
   "imageQuality": "Image Quality",
@@ -15,6 +16,7 @@
   "mustBeValidNumber": "Must be a valid number",
   "fileConvertedSuccessfuly": "File converted successfully :)",
   "fileSizeExceeded": "You can upload a file up to 1GB in size",
+  "toolDescription": "This tool helps you quickly transform CBZ files into PDFs for your Kindle device or any other e-reader. No installation required — everything happens in your browser!",
   "conversionComplete": {
     "clickHere": "Click here",
     "toDownloadYourKindleFileText": "to download your PDF file."
