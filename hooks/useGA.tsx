@@ -32,7 +32,7 @@ export const useGA = () => {
 
   const recordGa = async (properties: IRecordGAReturnProperties): Promise<void> => {
     try {
-      const response: Response = await fetch('/api/tracking', {
+      const response: Response = await fetch('/api/userDetails', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
