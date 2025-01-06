@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
   const { category, action, label } = await req.json();
 
   const payload = {
-    client_id: '555',  // Use a UUID for production
+    client_id: crypto.randomUUID(),  // Use a UUID for production
     events: [{
       name: action,  
       params: {
