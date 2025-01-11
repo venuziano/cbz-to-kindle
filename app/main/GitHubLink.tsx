@@ -14,7 +14,7 @@ export default function GitHubLink({ customClassName }: IGitHubLinkProperties) {
   return (
     <div 
       className={`flex flex-col justify-center items-center bg-white rounded-lg shadow-lg p-2 ${customClassName}`}
-      onClick={() => recordGa({category: 'Interaction', action: 'Github test1212'})}
+      onClick={() => recordGa({category: 'Interaction', action: 'Github_test'})}
     >
       <a
         href="https://github.com/venuziano"

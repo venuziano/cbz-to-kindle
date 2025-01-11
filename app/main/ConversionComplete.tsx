@@ -34,7 +34,7 @@ function ConversionComplete({ progress, handleDownloadFile }: IConversionComplet
               <FcApproval className="text-green-800" />
               <a
                 className="text-blue-700 underline font-semibold whitespace-nowrap cursor-pointer"
-                onClick={() => { handleDownloadFile(); recordGa({category: 'Interaction', action: 'File Downloaded test1212'}) }}
+                onClick={() => { handleDownloadFile(); recordGa({category: 'Interaction', action: 'File_Downloaded_test'}) }}
               >
                 {translation("conversionComplete.clickHere")}
               </a>

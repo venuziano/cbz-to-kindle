@@ -36,7 +36,7 @@ export default function FormHints() {
       </p>
       <div
         className="mt-4 p-4 bg-blue-50 rounded-lg border border-blue-300 shadow-md"
-        onClick={() => recordGa({ category: 'Interaction', action: 'Test file downloaded test1212' })}
+        onClick={() => recordGa({ category: 'Interaction', action: 'Test_file_downloaded_test' })}
       >
         <p className="text-sm text-gray-700 font-medium mb-2">
           {translation("formHint.donwloadLabel")}

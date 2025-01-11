@@ -109,7 +109,7 @@ export default function Home() {
     
     // Submit form if no errors
     if (Object.keys(formErrors).length === 0 && file) {
-      recordGa({ category: 'Interaction', action: 'Convert test1212' })
+      recordGa({ category: 'Interaction', action: 'Convert_test' })
 
       setProgress(0);
       setStartTime(Date.now()); // Record start time
@@ -120,7 +120,7 @@ export default function Home() {
           behavior: 'smooth',
         });
 
-        recordGa({ category: 'Interaction', action: 'Finish to uploaded test1212' })
+        recordGa({ category: 'Interaction', action: 'Finish_to_uploaded_test' })
         setNewPDFBlob(pdfBlob)
         setSuccessToastMessage(translation('fileConvertedSuccessfuly'))
       }
@@ -182,7 +182,7 @@ export default function Home() {
               className="inline-block text-xs text-blue-600 py-1 px-1 rounded-md transition duration-300 cursor-pointer mx-auto"
               onClick={() => {
                 setHint(true)
-                recordGa({ category: 'Interaction', action: 'How to use test1212' })
+                recordGa({ category: 'Interaction', action: 'How_to_use_test' })
               }}
             >
               {translation('howToUse')}

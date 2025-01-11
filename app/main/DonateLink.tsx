@@ -116,7 +116,7 @@ export default function DonateLink() {
                  p-3 rounded-lg shadow 
                  hover:bg-yellow-500 
                  transition duration-300 md:ml-2 mt-4 md:mt-0"
-      onClick={() => recordGa({ category: 'Interaction', action: 'Donate test1212' })}
+      onClick={() => recordGa({ category: 'Interaction', action: 'Donate_test' })}
     >
       {/* Coffee icon container (relative) so we can absolutely position emojis */}
       <div className="relative inline-block">
