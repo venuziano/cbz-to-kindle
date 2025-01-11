@@ -49,7 +49,7 @@ export default function Home() {
   useEffect(() => {
     const currentUrl = `https://cbz-to-kindle.vercel.app/`;
     logPageView(currentUrl);
-  }, [logPageView]);
+  }, []);
 
   useEffect(() => {
     if (progress > 0 && progress < 100 && startTime) {
@@ -94,7 +94,7 @@ export default function Home() {
     if (!file) {
       formErrors.file = translation('chooseFileRequired');
     } else {
-      const allowedExtensions = ['cbz'];
+      const allowedExtensions = ['cbz', 'cbr'];
       const fileExtension = file.name.split('.').pop()?.toLowerCase();
       const maxFileSizeInBytes = 1 * 1024 * 1024 * 1024; // 1GB in bytes
 

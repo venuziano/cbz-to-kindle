@@ -13,16 +13,17 @@ export async function POST(req: NextRequest) {
   const { category, action, label } = await req.json();
 
   const payload = {
-    client_id: crypto.randomUUID(),  // Use a UUID for production
+    client_id: crypto.randomUUID(),
     events: [{
       name: action,  
       params: {
+        debug_mode: 1,
         category: category,
         label: label || '',
       }
     }]
   };
-
+  console.log('payload', payload)
   try {
     const response = await fetch(
       `https://www.google-analytics.com/mp/collect?measurement_id=${MEASUREMENT_ID}&api_secret=${API_SECRET}`,
@@ -38,7 +39,7 @@ export async function POST(req: NextRequest) {
     if (!response.ok) {
       throw new Error(`GA Error: ${response.statusText}`);
     }
-
+    console.log('response', response)
     return NextResponse.json({ message: 'Event Sent Successfully' });
   } catch (error) {
     console.error('GA Error:', error);

@@ -57,7 +57,7 @@ if __name__ == "__main__":
     TARGET_URL = "https://www.cbz-to-pdf.com.br/"
 
     # Specify the page to start searching from
-    START_PAGE = 1
+    START_PAGE = 10
 
     result = search_google_scrape(SEARCH_QUERY, TARGET_URL, start_page=START_PAGE, max_pages=10)
 
