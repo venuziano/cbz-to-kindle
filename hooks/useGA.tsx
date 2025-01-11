@@ -2,7 +2,6 @@
 import { useEffect } from "react";
 import ReactGA from "react-ga4";
 import * as Sentry from "@sentry/nextjs";
-import ga4 from "react-ga4";
 
 export interface IRecordGAReturnProperties {
   category: string
@@ -32,7 +31,7 @@ export const useGA = () => {
 
   const recordGa = async (properties: IRecordGAReturnProperties): Promise<void> => {
     try {
-      const response: Response = await fetch('/api/userDetails', {
+      await fetch('/api/userDetails', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -43,7 +42,6 @@ export const useGA = () => {
           label: properties.label || '',
         }),
       });
-      console.log('record ga4 response', response.body)
     } catch (error) {
       console.error('GA Event Error:', error);
       Sentry.captureException(error);

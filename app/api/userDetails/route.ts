@@ -1,8 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server';
 import * as Sentry from "@sentry/nextjs";
+import { cookies } from 'next/headers';
 
 const MEASUREMENT_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
 const API_SECRET = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_API_KEY;
+
+async function getClientId(): Promise<string | null> {
+  const cookieStore = cookies();
+  const gaCookie = (await cookieStore).get('_ga')?.value;
+
+  // Extract the client_id from the _ga cookie
+  const clientId = gaCookie ? gaCookie.split('.').slice(2).join('.') : null;
+  return clientId;
+}
 
 // POST request handler
 export async function POST(req: NextRequest) {
@@ -13,7 +23,7 @@ export async function POST(req: NextRequest) {
   const { category, action, label } = await req.json();
 
   const payload = {
-    client_id: crypto.randomUUID(),
+    client_id: await getClientId(),
     events: [{
       name: action,  
       params: {
@@ -23,7 +33,7 @@ export async function POST(req: NextRequest) {
       }
     }]
   };
-  console.log('payload', payload)
+
   try {
     const response = await fetch(
       `https://www.google-analytics.com/mp/collect?measurement_id=${MEASUREMENT_ID}&api_secret=${API_SECRET}`,
@@ -39,10 +49,9 @@ export async function POST(req: NextRequest) {
     if (!response.ok) {
       throw new Error(`GA Error: ${response.statusText}`);
     }
-    console.log('response', response)
+
     return NextResponse.json({ message: 'Event Sent Successfully' });
   } catch (error) {
-    console.error('GA Error:', error);
     Sentry.captureException(error);
     return NextResponse.json({ message: 'Error Sending Event' }, { status: 500 });
   }
