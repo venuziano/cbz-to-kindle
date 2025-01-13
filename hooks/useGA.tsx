@@ -33,7 +33,7 @@ export const useGA = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-          event_name: "page_view",
+          action: "page_view",
           page: url,
         }),
       });
