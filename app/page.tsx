@@ -47,7 +47,7 @@ export default function Home() {
   const successToast = useCallback(() => setSuccessToastMessage(''), []);
 
   useEffect(() => {
-    const currentUrl = `https://cbz-to-kindle.vercel.app/`;
+    const currentUrl = `https://www.cbz-to-pdf.com.br/`;
     logPageView(currentUrl);
   }, []);
 
