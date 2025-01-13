@@ -272,7 +272,7 @@ export default function Home() {
                 onChange={handleFileChange}
                 className="hidden"
                 disabled={progress > 0 && progress < 99}
-                onClick={() => recordGa({ category: 'Interaction', action: 'Choose File test1212' })}
+                onClick={() => recordGa({ category: 'Interaction', action: 'Choose_File_test' })}
               />
               <span id="fileName" className="ml-3 text-gray-500 text-sm truncate" title={file ? file.name : "No file chosen"}>
                 {file ? file.name : `${translation("noFileChosen")}`}

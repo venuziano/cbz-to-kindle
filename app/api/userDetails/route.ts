@@ -20,13 +20,14 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'GA ID or API Secret missing' }, { status: 500 });
   }
 
-  const { category, action, label } = await req.json();
+  const { category, action, label, page } = await req.json();
 
   const payload = {
     client_id: await getClientId(),
     events: [{
       name: action,  
       params: {
+        page_location: page || undefined,
         debug_mode: 1,
         category: category,
         label: label || '',

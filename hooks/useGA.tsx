@@ -25,9 +25,27 @@ export const useGA = () => {
     }
   }, []);
 
-  const logPageView = (url: string) => {
-    ReactGA.send({ hitType: "pageview", page: url });
+  const logPageView = async (url: string): Promise<void> => {
+    try {
+      await fetch('/api/userDetails', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          event_name: "page_view",
+          page: url,
+        }),
+      });
+    } catch (error) {
+      console.error('GA Pageview Error:', error);
+      Sentry.captureException(error);
+    }
   };
+
+  // const logPageView = (url: string) => {
+  //   ReactGA.send({ hitType: "pageview", page: url });
+  // };
 
   const recordGa = async (properties: IRecordGAReturnProperties): Promise<void> => {
     try {
