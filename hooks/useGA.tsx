@@ -43,10 +43,6 @@ export const useGA = () => {
     }
   };
 
-  // const logPageView = (url: string) => {
-  //   ReactGA.send({ hitType: "pageview", page: url });
-  // };
-
   const recordGa = async (properties: IRecordGAReturnProperties): Promise<void> => {
     try {
       await fetch('/api/userDetails', {
