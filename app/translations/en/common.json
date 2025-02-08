@@ -1,25 +1,27 @@
 {
-  "toolTitle": "Convert CBZ to PDF",
+  "toolTitle": "Comic Book Converter",
   "howToUse": "How to Use?",
   "imageWidh": "Image Width",
   "imageQuality": "Image Quality",
   "imagemQualityHint": "Enter a value for the quality of the image (e.g., 1–100).",
   "uploadCbzFileInput": "Upload CBZ File",
   "chooseFile": "Choose File",
+  "convertTo": "Convert to",
   "noFileChosen": "No file choosen",
   "convert": "Convert",
   "gitHub": "Visit My Github",
   "imageWidthRequired": "Image Width is required",
   "imageWidthQualityRequired": "Image Quality is required",
+  "imageWidthQualityMaxAllowed": "Max allowed 100",
   "chooseFileRequired": "Please select a CBZ file",
   "onlyCbzAllowed": "Only CBZ files are allowed",
   "mustBeValidNumber": "Must be a valid number",
   "fileConvertedSuccessfuly": "File converted successfully :)",
   "fileSizeExceeded": "You can upload a file up to 1GB in size",
-  "toolDescription": "This tool helps you quickly transform CBZ files into PDFs for your Kindle device or any other e-reader. No installation required — everything happens in your browser!",
+  "toolDescription": "This tool helps you quickly transform CBZ files into PDFs or EPUBs for your Kindle device or any other e-reader. No installation required — everything happens in your browser!",
   "conversionComplete": {
     "clickHere": "Click here",
-    "toDownloadYourKindleFileText": "to download your PDF file."
+    "toDownloadYourKindleFileText": "to download your file."
   },
   "progressBar": {
     "converting": "Converting: ",
@@ -27,10 +29,12 @@
     "halfway": "You're halfway there! Hang tight, we're still converting."
   },
   "formHint": {
+    "fileLarger200MB": "Files Larger than 200MB:",
+    "fileSmaller200MB": "Files Smaller than 200MB try using 1900 as Image Width and 100 as Image Quality.",
     "firstSentence": "Configure the settings below to generate your PDF. For optimal results:",
     "widthHint": " Recommended <strong>1200px and 1400px</strong>.",
     "imageQualityHint": " Recommended between <strong>60 and 80</strong>.",
-    "amazonNote": "Note: Amazon only allows PDFs up to <strong>{{size}}</strong>. Adjust your settings accordingly.",
+    "amazonNote": "Note: Amazon Kindle only allows PDFs up to <strong>{{size}}</strong>. Adjust your settings accordingly.",
     "lastSentence": "These recommendations are based on my personal usage and may vary depending on your specific requirements and constraints.",
     "donwloadLabel": "Don’t have a CBZ file to test?",
     "downloadButtonLabel": "Click Here to Download a Test File"

@@ -18,6 +18,7 @@ import FormHints from './main/FormHints';
 import ProgressBar from './main/ProgressBar';
 import ConversionComplete from './main/ConversionComplete';
 import { useGA } from '@/hooks/useGA';
+import { createEPUB, extractCBZ } from '@/utils/test';
 
 interface FormErrors {
   newPDFWidth?: string;
@@ -41,6 +42,9 @@ export default function Home() {
   const [newPDFBlob, setNewPDFBlob] = useState<Blob | null>(null);
   const [errorToastMessage, setErrorToastMessage] = useState<string>('');
   const [successToastMessage, setSuccessToastMessage] = useState<string>('');
+  const [convertToType, setConvertToType] = useState<string>('pdf');
+
+  const isPDFTypeSelected: boolean = convertToType === 'pdf'
 
   // Memoize the onClose handler
   const closeToast = useCallback(() => setErrorToastMessage(''), []);
@@ -65,7 +69,7 @@ export default function Home() {
       setEta(null); // Reset ETA when done
     }
   }, [progress, startTime]);
-  
+
   useEffect(() => {
     if (progress >= 50 && !showWarning) {
       setShowWarning(true);
@@ -74,27 +78,30 @@ export default function Home() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setNewPDFBlob(null)
     const formErrors: FormErrors = {};
 
     // Validate first number
-    if (!newPDFWidth) {
+    if (!newPDFWidth && isPDFTypeSelected) {
       formErrors.newPDFWidth = translation('imageWidthRequired');
     } else if (isNaN(Number(newPDFWidth))) {
       formErrors.newPDFWidth = translation('mustBeValidNumber');
     }
 
     // Validate second number
-    if (!newPDFQuality) {
+    if (!newPDFQuality && isPDFTypeSelected) {
       formErrors.newPDFQuality = translation('imageWidthQualityRequired');
     } else if (isNaN(Number(newPDFQuality))) {
       formErrors.newPDFQuality = translation('mustBeValidNumber');
+    } else if (Number(newPDFQuality) > 100) {
+      formErrors.newPDFQuality = translation('imageWidthQualityMaxAllowed');
     }
 
     // Validate file input
     if (!file) {
       formErrors.file = translation('chooseFileRequired');
     } else {
-      const allowedExtensions = ['cbz', 'cbr'];
+      const allowedExtensions = ['cbz'];
       const fileExtension = file.name.split('.').pop()?.toLowerCase();
       const maxFileSizeInBytes = 1 * 1024 * 1024 * 1024; // 1GB in bytes
 
@@ -106,42 +113,68 @@ export default function Home() {
     }
 
     setErrors(formErrors);
-    
+
     // Submit form if no errors
     if (Object.keys(formErrors).length === 0 && file) {
       recordGa({ category: 'Interaction', action: 'Convert_test' })
 
-      setProgress(0);
-      setStartTime(Date.now()); // Record start time
-      const pdfBlob = await convertCbzToPdf(file, setProgress, setErrorToastMessage, newPDFWidth, newPDFQuality);
-      if (pdfBlob) {
-        window.scrollTo({
-          top: document.body.scrollHeight,
-          behavior: 'smooth',
+      if (isPDFTypeSelected) {
+        setProgress(0);
+        setStartTime(Date.now()); // Record start time
+        const pdfBlob = await convertComicToPdf(file, setProgress, setErrorToastMessage, newPDFWidth, newPDFQuality);
+        if (pdfBlob) {
+          window.scrollTo({
+            top: document.body.scrollHeight,
+            behavior: 'smooth',
+          });
+
+          recordGa({ category: 'Interaction', action: 'Finish_to_uploaded_test' })
+          setNewPDFBlob(pdfBlob)
+          setSuccessToastMessage(translation('fileConvertedSuccessfuly'))
+        }
+      } else {
+        setProgress(0);
+        // Extract images from CBZ
+        const images = await extractCBZ(file, (extractionProgress) => {
+          setProgress(extractionProgress);
         });
 
-        recordGa({ category: 'Interaction', action: 'Finish_to_uploaded_test' })
-        setNewPDFBlob(pdfBlob)
-        setSuccessToastMessage(translation('fileConvertedSuccessfuly'))
+        // Create EPUB file
+        const epubBlob = await createEPUB(images, (metadata) => {
+          // metadata.percent is already mapped to 50–100
+          setProgress(metadata.percent);
+        });
+
+        setNewPDFBlob(epubBlob)
+        setProgress(100);
       }
     }
   };
 
   const handleDownload = (): void => {
-    const url = URL.createObjectURL(newPDFBlob as Blob);
+    if (isPDFTypeSelected) {
+      const url = URL.createObjectURL(newPDFBlob as Blob);
 
-    // Create a temporary anchor element
-    const link = document.createElement('a');
-    link.href = url;
-    link.download = `${file?.name.replace(/\.[^/.]+$/, '')}.pdf`
+      // Create a temporary anchor element
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = `${file?.name.replace(/\.[^/.]+$/, '')}.pdf`
 
-    // Append to the body and trigger the download
-    document.body.appendChild(link);
-    link.click();
+      // Append to the body and trigger the download
+      document.body.appendChild(link);
+      link.click();
 
-    // Clean up: remove the anchor and revoke the URL
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
+      // Clean up: remove the anchor and revoke the URL
+      document.body.removeChild(link);
+      URL.revokeObjectURL(url);
+    } else {
+      const link = document.createElement("a");
+      link.href = URL.createObjectURL(newPDFBlob as Blob);
+      link.download = 'converted.epub';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+    }
   }
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
@@ -160,20 +193,20 @@ export default function Home() {
           onSubmit={handleSubmit}
         >
           <div className='text-center'>
-            <h1 className="sr-only">Convert CBZ to PDF</h1>
+            <h1 className="sr-only">Convert CBZ to PDF / Comic Book Converter</h1>
             <h3 className="sr-only">Converter CBZ para PDF</h3>
             <h1 className="text-3xl font-bold text-gray-700">{translation('toolTitle')}</h1>
-            
+
             {/* A short h2 and paragraph for extra SEO context. */}
             <h2 className="sr-only">
               The Easiest Way to Convert Your Comic Book Files (CBZ) to PDF. CBZ to PDF Converter - Free Online Tool
             </h2>
-            
+
             <p className="sr-only">
-              This tool helps you quickly transform CBZ files into PDFs for your Kindle device or any other e-reader.
+              This tool helps you quickly transform CBZ files into PDFs or EPUBs for your Kindle device or any other e-reader.
               No installation required — everything happens in your browser!
             </p>
-           
+
             <p className="text-xs font-bold text-gray-700 mt-4">
               {translation('toolDescription')}
             </p>
@@ -209,51 +242,87 @@ export default function Home() {
             </div>
           )}
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4 mt-4">
-            {/* Image Width Field */}
-            <div>
-              <label className="block text-gray-700">{translation('imageWidh')}</label>
-              <input
-                type="number"
-                value={newPDFWidth}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setNewPDFWidth(e.target.value)
-                }
-                className={`text-gray-700 mt-1 w-full px-3 py-2 border ${errors.newPDFWidth ? 'border-red-500' : 'border-gray-300'
-                  } rounded-md focus:outline-none focus:ring-2 ${errors.newPDFWidth ? 'focus:ring-red-200' : 'focus:ring-indigo-200'
-                  }`}
-              />
-              {errors.newPDFWidth && (
-                <p className="text-red-500 text-sm mt-1">{errors.newPDFWidth}</p>
-              )}
-            </div>
+          <div className="flex items-center mt-4 mb-4">
+            <span className="text-gray-700">{translation('convertTo')}</span>
 
-            {/* Image Quality Field */}
-            <div>
-              <div className="flex items-center">
-                <label className="block text-gray-700">{translation('imageQuality')}</label>
-                <div className="relative group ml-2 cursor-pointer">
-                  <FcInfo />
-                  <div className="absolute left-0 -top-10 hidden w-48 p-2 text-sm text-white bg-black rounded-md shadow-lg group-hover:block">
-                    {translation('imagemQualityHint')}
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="radio"
+                name="options"
+                value="pdf"
+                className="hidden peer"
+                checked={convertToType === "pdf"}
+                onChange={() => setConvertToType("pdf")}
+              />
+              <div className="w-5 h-5 border-2 border-gray-400 rounded-full flex items-center justify-center peer-checked:border-blue-500 peer-checked:bg-blue-500">
+                <div className="w-2.5 h-2.5 bg-white rounded-full peer-checked:block"></div>
+              </div>
+              <span className="text-gray-700">PDF</span>
+            </label>
+
+            <label className="flex items-center space-x-2 cursor-pointer">
+              <input
+                type="radio"
+                name="options"
+                value="epub"
+                className="hidden peer"
+                checked={convertToType === "epub"}
+                onChange={() => setConvertToType("epub")}
+              />
+              <div className="w-5 h-5 border-2 border-gray-400 rounded-full flex items-center justify-center peer-checked:border-blue-500 peer-checked:bg-blue-500">
+                <div className="w-2.5 h-2.5 bg-white rounded-full peer-checked:block"></div>
+              </div>
+              <span className="text-gray-700">EPUB</span>
+            </label>
+          </div>
+
+          {isPDFTypeSelected ?
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+              {/* Image Width Field */}
+              <div>
+                <label className="block text-gray-700">{translation('imageWidh')}</label>
+                <input
+                  type="number"
+                  value={newPDFWidth}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setNewPDFWidth(e.target.value)
+                  }
+                  className={`text-gray-700 mt-1 w-full px-3 py-2 border ${errors.newPDFWidth ? 'border-red-500' : 'border-gray-300'
+                    } rounded-md focus:outline-none focus:ring-2 ${errors.newPDFWidth ? 'focus:ring-red-200' : 'focus:ring-indigo-200'
+                    }`}
+                />
+                {errors.newPDFWidth && (
+                  <p className="text-red-500 text-sm mt-1">{errors.newPDFWidth}</p>
+                )}
+              </div>
+
+              {/* Image Quality Field */}
+              <div>
+                <div className="flex items-center">
+                  <label className="block text-gray-700">{translation('imageQuality')}</label>
+                  <div className="relative group ml-2 cursor-pointer">
+                    <FcInfo />
+                    <div className="absolute left-0 -top-10 hidden w-48 p-2 text-sm text-white bg-black rounded-md shadow-lg group-hover:block">
+                      {translation('imagemQualityHint')}
+                    </div>
                   </div>
                 </div>
+                <input
+                  type="number"
+                  value={newPDFQuality}
+                  onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
+                    setNewPDFQuality(e.target.value)
+                  }
+                  className={`text-gray-700 mt-1 w-full px-3 py-2 border ${errors.newPDFQuality ? 'border-red-500' : 'border-gray-300'
+                    } rounded-md focus:outline-none focus:ring-2 ${errors.newPDFQuality ? 'focus:ring-red-200' : 'focus:ring-indigo-200'
+                    }`}
+                />
+                {errors.newPDFQuality && (
+                  <p className="text-red-500 text-sm mt-1">{errors.newPDFQuality}</p>
+                )}
               </div>
-              <input
-                type="number"
-                value={newPDFQuality}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>) =>
-                  setNewPDFQuality(e.target.value)
-                }
-                className={`text-gray-700 mt-1 w-full px-3 py-2 border ${errors.newPDFQuality ? 'border-red-500' : 'border-gray-300'
-                  } rounded-md focus:outline-none focus:ring-2 ${errors.newPDFQuality ? 'focus:ring-red-200' : 'focus:ring-indigo-200'
-                  }`}
-              />
-              {errors.newPDFQuality && (
-                <p className="text-red-500 text-sm mt-1">{errors.newPDFQuality}</p>
-              )}
-            </div>
-          </div>
+            </div> : <></>}
+
 
           <div className="mb-6">
             <label className="block text-gray-700 font-medium mb-2">{translation('uploadCbzFileInput')}</label>
@@ -335,7 +404,7 @@ const MAX_ARRAYBUFFER_SIZE_GB = 500; // Threshold: 500 GB
 // }
 
 // Helper functions
-async function convertCbzToPdf(
+async function convertComicToPdf(
   file: File,
   setProgress: (value: number) => void,
   setErrorToastMessage: (value: string) => void,
@@ -406,12 +475,12 @@ async function convertCbzToPdf(
 
     return pdfBlob;
   } catch (err) {
+    console.log('err', err)
     Sentry.captureException(err)
     setErrorToastMessage('An unexpected error happened :('); // Trigger the toast with the error message
     return null;
   }
 }
-
 
 function resizeImage(imageBlob: Blob, maxWidth: number, imageQuality?: number): Promise<Blob> {
   return new Promise((resolve, reject) => {

@@ -10,10 +10,13 @@ export default function FormHints() {
 
   return (
     <div className="p-4 bg-gray-100 rounded-md border border-gray-300 shadow-sm">
-      <p className="text-sm text-gray-700 mb-4">
+      <p className="text-sm text-gray-700 mb-2">
         {translation("formHint.firstSentence")}
       </p>
-      <ul className="list-disc pl-5 text-sm text-gray-700 mb-4">
+      
+      <strong className="text-sm text-gray-700">{translation("formHint.fileLarger200MB")}</strong>
+      
+      <ul className="list-disc pl-5 text-sm text-gray-700 mb-2">
         <li>
           <strong>{translation("imageWidh")}:</strong> 
           <Trans i18nKey="formHint.widthHint">
@@ -28,7 +31,10 @@ export default function FormHints() {
           </Trans>
         </li>
       </ul>
-      <p className="text-sm text-red-600">
+
+      <strong className="text-sm text-gray-700">{translation("formHint.fileSmaller200MB")}</strong>
+
+      <p className="text-sm text-red-600 mt-2">
         <Trans i18nKey="formHint.amazonNote" values={{ size: "200MB" }} />
       </p>
       <p className="text-sm text-gray-500 italic mt-2">
