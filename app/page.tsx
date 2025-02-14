@@ -76,18 +76,92 @@ export default function Home() {
     }
   }, [progress, showWarning]);
 
+  // const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   setNewPDFBlob(null)
+  //   const formErrors: FormErrors = {};
+
+  //   // Validate first number
+  //   if (!newPDFWidth && isPDFTypeSelected) {
+  //     formErrors.newPDFWidth = translation('imageWidthRequired');
+  //   } else if (isNaN(Number(newPDFWidth))) {
+  //     formErrors.newPDFWidth = translation('mustBeValidNumber');
+  //   }
+
+  //   // Validate second number
+  //   if (!newPDFQuality && isPDFTypeSelected) {
+  //     formErrors.newPDFQuality = translation('imageWidthQualityRequired');
+  //   } else if (isNaN(Number(newPDFQuality))) {
+  //     formErrors.newPDFQuality = translation('mustBeValidNumber');
+  //   } else if (Number(newPDFQuality) > 100) {
+  //     formErrors.newPDFQuality = translation('imageWidthQualityMaxAllowed');
+  //   }
+
+  //   // Validate file input
+  //   if (!file) {
+  //     formErrors.file = translation('chooseFileRequired');
+  //   } else {
+  //     const allowedExtensions = ['cbz'];
+  //     const fileExtension = file.name.split('.').pop()?.toLowerCase();
+  //     const maxFileSizeInBytes = 1 * 1024 * 1024 * 1024; // 1GB in bytes
+
+  //     if (!allowedExtensions.includes(fileExtension || '')) {
+  //       formErrors.file = translation('onlyCbzAllowed');
+  //     } else if (file.size > maxFileSizeInBytes) {
+  //       formErrors.file = translation('fileSizeExceeded');
+  //     }
+  //   }
+
+  //   setErrors(formErrors);
+
+  //   // Submit form if no errors
+  //   if (Object.keys(formErrors).length === 0 && file) {
+  //     recordGa({ category: 'Interaction', action: 'Convert_test' })
+
+  //     if (isPDFTypeSelected) {
+  //       setProgress(0);
+  //       setStartTime(Date.now()); // Record start time
+  //       const pdfBlob = await convertComicToPdf(file, setProgress, setErrorToastMessage, newPDFWidth, newPDFQuality);
+  //       if (pdfBlob) {
+  //         window.scrollTo({
+  //           top: document.body.scrollHeight,
+  //           behavior: 'smooth',
+  //         });
+
+  //         recordGa({ category: 'Interaction', action: 'Finish_to_uploaded_test' })
+  //         setNewPDFBlob(pdfBlob)
+  //         setSuccessToastMessage(translation('fileConvertedSuccessfuly'))
+  //       }
+  //     } else {
+  //       setProgress(0);
+  //       // Extract images from CBZ
+  //       const images = await extractCBZ(file, (extractionProgress) => {
+  //         setProgress(extractionProgress);
+  //       });
+
+  //       // Create EPUB file
+  //       const epubBlob = await createEPUB(images, (metadata) => {
+  //         // metadata.percent is already mapped to 50–100
+  //         setProgress(metadata.percent);
+  //       });
+
+  //       setNewPDFBlob(epubBlob)
+  //       setProgress(100);
+  //     }
+  //   }
+  // };
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    setNewPDFBlob(null)
+    setNewPDFBlob(null);
     const formErrors: FormErrors = {};
-
+  
     // Validate first number
     if (!newPDFWidth && isPDFTypeSelected) {
       formErrors.newPDFWidth = translation('imageWidthRequired');
     } else if (isNaN(Number(newPDFWidth))) {
       formErrors.newPDFWidth = translation('mustBeValidNumber');
     }
-
+  
     // Validate second number
     if (!newPDFQuality && isPDFTypeSelected) {
       formErrors.newPDFQuality = translation('imageWidthQualityRequired');
@@ -96,7 +170,7 @@ export default function Home() {
     } else if (Number(newPDFQuality) > 100) {
       formErrors.newPDFQuality = translation('imageWidthQualityMaxAllowed');
     }
-
+  
     // Validate file input
     if (!file) {
       formErrors.file = translation('chooseFileRequired');
@@ -104,49 +178,61 @@ export default function Home() {
       const allowedExtensions = ['cbz'];
       const fileExtension = file.name.split('.').pop()?.toLowerCase();
       const maxFileSizeInBytes = 1 * 1024 * 1024 * 1024; // 1GB in bytes
-
+  
       if (!allowedExtensions.includes(fileExtension || '')) {
         formErrors.file = translation('onlyCbzAllowed');
       } else if (file.size > maxFileSizeInBytes) {
         formErrors.file = translation('fileSizeExceeded');
       }
     }
-
+  
     setErrors(formErrors);
-
+  
     // Submit form if no errors
     if (Object.keys(formErrors).length === 0 && file) {
-      recordGa({ category: 'Interaction', action: 'Convert_test' })
-
+      recordGa({ category: 'Interaction', action: 'Convert_test' });
+  
       if (isPDFTypeSelected) {
+        // PDF conversion branch remains unchanged.
         setProgress(0);
         setStartTime(Date.now()); // Record start time
-        const pdfBlob = await convertComicToPdf(file, setProgress, setErrorToastMessage, newPDFWidth, newPDFQuality);
+        const pdfBlob = await convertComicToPdf(
+          file,
+          setProgress,
+          setErrorToastMessage,
+          newPDFWidth,
+          newPDFQuality
+        );
         if (pdfBlob) {
           window.scrollTo({
             top: document.body.scrollHeight,
             behavior: 'smooth',
           });
-
-          recordGa({ category: 'Interaction', action: 'Finish_to_uploaded_test' })
-          setNewPDFBlob(pdfBlob)
-          setSuccessToastMessage(translation('fileConvertedSuccessfuly'))
+          recordGa({ category: 'Interaction', action: 'Finish_to_uploaded_test' });
+          setNewPDFBlob(pdfBlob);
+          setSuccessToastMessage(translation('fileConvertedSuccessfuly'));
         }
       } else {
+        // Use a Web Worker for EPUB conversion.
         setProgress(0);
-        // Extract images from CBZ
-        const images = await extractCBZ(file, (extractionProgress) => {
-          setProgress(extractionProgress);
-        });
-
-        // Create EPUB file
-        const epubBlob = await createEPUB(images, (metadata) => {
-          // metadata.percent is already mapped to 50–100
-          setProgress(metadata.percent);
-        });
-
-        setNewPDFBlob(epubBlob)
-        setProgress(100);
+        const worker = new Worker(new URL('../workers/worker.js', import.meta.url));
+  
+        worker.onmessage = (e: MessageEvent) => {
+          const { type, progress: workerProgress, blob, error } = e.data;
+          if (type === 'progress') {
+            setProgress(workerProgress);
+          } else if (type === 'result') {
+            setNewPDFBlob(blob);
+            setProgress(100);
+            worker.terminate();
+          } else if (type === 'error') {
+            setErrorToastMessage(error);
+            worker.terminate();
+          }
+        };
+  
+        // Post the file to the worker.
+        worker.postMessage({ file });
       }
     }
   };
@@ -181,6 +267,28 @@ export default function Home() {
     const selectedFile = e.target.files && e.target.files[0];
     setFile(selectedFile || null);
   };
+
+  useEffect(() => {
+    // Dynamically import the worker using the URL syntax.
+    const worker = new Worker(new URL('../workers/worker.js', import.meta.url));
+
+    // Listen for messages from the worker.
+    worker.onmessage = (event) => {
+      console.log('event', event)
+      // setResult(event.data);
+    };
+
+    // Optionally handle errors.
+    worker.onerror = (error) => {
+      console.error('Worker error:', error);
+    };
+
+    // Send a message to the worker.
+    worker.postMessage(20);
+
+    // Cleanup the worker on component unmount.
+    return () => worker.terminate();
+  }, []);
 
   return (
     <>
