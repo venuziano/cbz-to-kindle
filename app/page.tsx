@@ -18,7 +18,6 @@ import FormHints from './main/FormHints';
 import ProgressBar from './main/ProgressBar';
 import ConversionComplete from './main/ConversionComplete';
 import { useGA } from '@/hooks/useGA';
-import { createEPUB, extractCBZ } from '@/utils/test';
 
 interface FormErrors {
   newPDFWidth?: string;
