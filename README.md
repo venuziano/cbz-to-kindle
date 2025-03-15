@@ -12,6 +12,9 @@ No installation required — everything happens in your browser!
 ### Google Search Console
 ![](cbz-gcs.PNG)
 
+### Result
+![](kindle-result.PNG)
+
 ### Prerequirements
 
 ```
