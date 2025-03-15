@@ -13,7 +13,7 @@ No installation required — everything happens in your browser!
 ![](cbz-gcs.PNG)
 
 ### Result
-![](kindle-result.PNG)
+![](kindle-result.jpeg)
 
 ### Prerequirements
 
