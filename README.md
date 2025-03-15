@@ -15,7 +15,7 @@ No installation required — everything happens in your browser!
 ### Prerequirements
 
 ```
-Next v15.
+Next v15
 ```
 
 ## Built with
@@ -27,7 +27,7 @@ Next v15.
 * Tailwind CSS
 * Docker
 * Web worker for heavy convertion files
-* I18n for internationalization - PT-BR and English.
+* I18n for internationalization, automatically detecting PT-BR and English
 
 ## Author
 
