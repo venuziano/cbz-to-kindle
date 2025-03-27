@@ -189,7 +189,22 @@ export default function Home() {
   
     // Submit form if no errors
     if (Object.keys(formErrors).length === 0 && file) {
-      recordGa({ category: 'Interaction', action: 'Convert_test' });
+      const formatBytes = (bytes: number): string => {
+        const gb = 1024 * 1024 * 1024;
+        const mb = 1024 * 1024;
+        if (bytes >= gb) {
+          return `${(bytes / gb).toFixed(2)} GB`;
+        } else {
+          return `${(bytes / mb).toFixed(2)} MB`;
+        }
+      };
+
+      recordGa({ 
+        category: 'Interaction', 
+        action: 'Convert_test',
+        fileName: file.name,
+        fileSize: `${String(formatBytes(file.size))}`
+      });
   
       if (isPDFTypeSelected) {
         // PDF conversion branch remains unchanged.

@@ -20,7 +20,7 @@ export async function POST(req: NextRequest) {
     return NextResponse.json({ message: 'GA ID or API Secret missing' }, { status: 500 });
   }
 
-  const { category, action, label, page } = await req.json();
+  const { category, action, label, page, fileName, fileSize } = await req.json();
 
   const payload = {
     client_id: await getClientId(),
@@ -31,6 +31,7 @@ export async function POST(req: NextRequest) {
         debug_mode: 1,
         category: category,
         label: label || '',
+        file_info: `${fileName}_FILE_SIZE:_${fileSize}`
       }
     }]
   };

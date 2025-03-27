@@ -5,8 +5,10 @@ import * as Sentry from "@sentry/nextjs";
 
 export interface IRecordGAReturnProperties {
   category: string
-  label?: string
   action: string
+  label?: string
+  fileName?: string
+  fileSize?: string
 }
 
 const GA_TRACKING_ID = process.env.NEXT_PUBLIC_GOOGLE_ANALYTICS_ID;
@@ -54,6 +56,8 @@ export const useGA = () => {
           category: properties.category,
           action: properties.action,
           label: properties.label || '',
+          fileName: properties.fileName,
+          fileSize: properties.fileSize,
         }),
       });
     } catch (error) {
