@@ -320,7 +320,6 @@ export default function Home() {
             <h3 className="sr-only">Converter CBZ para PDF</h3>
             <h1 className="text-3xl font-bold text-gray-700">{translation('toolTitle')}</h1>
 
-            {/* A short h2 and paragraph for extra SEO context. */}
             <h2 className="sr-only">
               The Easiest Way to Convert Your Comic Book Files (CBZ) to PDF. CBZ to PDF Converter - Free Online Tool
             </h2>
@@ -401,7 +400,6 @@ export default function Home() {
 
           {isPDFTypeSelected ?
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-              {/* Image Width Field */}
               <div>
                 <label className="block text-gray-700">{translation('imageWidh')}</label>
                 <input
@@ -419,7 +417,6 @@ export default function Home() {
                 )}
               </div>
 
-              {/* Image Quality Field */}
               <div>
                 <div className="flex items-center">
                   <label className="block text-gray-700">{translation('imageQuality')}</label>

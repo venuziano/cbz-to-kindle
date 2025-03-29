@@ -1,6 +1,8 @@
-import { useState } from 'react';
+import { useCallback, useState } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { FaBullhorn } from 'react-icons/fa';
+import ErrorToast from './ErrorToast';
+import SuccessToast from './SuccessToast';
 
 interface FormErrors {
   email?: string;
@@ -9,9 +11,15 @@ interface FormErrors {
 
 export const Feedback = () => {
   const [isFeedbackComponentOpen, setFeedbackComponentOpen] = useState(false);
-  const [email, setEmail] = useState('');
-  const [message, setMessage] = useState('');
+  const [email, setEmail] = useState<string>('');
+  const [message, setMessage] = useState<string>('');
   const [errors, setErrors] = useState<FormErrors>({});
+  const [errorToastMessage, setErrorToastMessage] = useState<string>('');
+  const [successToastMessage, setSuccessToastMessage] = useState<string>('');
+  const [isSendingFeedback, setSendingFeedback] = useState<boolean>(false);
+
+  const closeToast = useCallback(() => setErrorToastMessage(''), []);
+  const successToast = useCallback(() => setSuccessToastMessage(''), []);
 
   const modalVariants = {
     hidden: { scale: 0, opacity: 0 },
@@ -27,7 +35,7 @@ export const Feedback = () => {
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
       formErrors.email = 'Invalid email address';
     }
-    
+
     if (!message) {
       formErrors.message = 'Message is required';
     } else if (message.length < 10) {
@@ -40,15 +48,31 @@ export const Feedback = () => {
     return Object.keys(formErrors).length === 0;
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     e.stopPropagation();
+
     if (validateForm()) {
-      console.log({ email, message });
-      setEmail('');
-      setMessage('');
-      setErrors({});
-      setFeedbackComponentOpen(false);
+      setSendingFeedback(true)
+
+      const res = await fetch('/api/sendFeedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, message }),
+      });
+
+      if (res.ok) {
+        setEmail('');
+        setMessage('');
+        setErrors({});
+        setSuccessToastMessage('Thanks for sending your feedback!');
+        // setSuccessToastMessage(translation('fileConvertedSuccessfuly'));
+        setFeedbackComponentOpen(false);
+      } else {
+        setErrorToastMessage('Oh no, something went wrong. Please try again later.');
+      }
+
+      setSendingFeedback(false)
     }
   };
 
@@ -66,6 +90,7 @@ export const Feedback = () => {
             setEmail={setEmail}
             setMessage={setMessage}
             modalVariants={modalVariants}
+            isSendingFeedback={isSendingFeedback}
           />
         )}
       </AnimatePresence>
@@ -84,6 +109,9 @@ export const Feedback = () => {
           <FaBullhorn />
         </button>
       </div>
+
+      <ErrorToast message={errorToastMessage} onClose={closeToast} />
+      <SuccessToast message={successToastMessage} onClose={successToast} />
     </>
   );
 };
@@ -97,6 +125,7 @@ export interface FeedbackModalProps {
   setEmail: React.Dispatch<React.SetStateAction<string>>;
   setMessage: React.Dispatch<React.SetStateAction<string>>;
   modalVariants: Variants;
+  isSendingFeedback: boolean;
 }
 
 export const FeedbackModal = ({
@@ -108,6 +137,7 @@ export const FeedbackModal = ({
   setEmail,
   setMessage,
   modalVariants,
+  isSendingFeedback
 }: FeedbackModalProps) => (
   <motion.div
     variants={modalVariants}
@@ -129,7 +159,7 @@ export const FeedbackModal = ({
       </button>
     </div>
     <p className="mb-5 leading-relaxed text-gray-600">
-      If you had any issues or you liked our product, please share with us!
+      If you had any issues or you liked the tool, please share with me!
     </p>
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
@@ -145,11 +175,9 @@ export const FeedbackModal = ({
           placeholder="Your email"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          className={`text-gray-700 mt-1 w-full px-3 py-2 border ${
-            errors.email ? 'border-red-500' : 'border-gray-300'
-          } rounded-md focus:outline-none focus:ring-2 ${
-            errors.email ? 'focus:ring-red-200' : 'focus:ring-indigo-200'
-          }`}
+          className={`text-gray-700 mt-1 w-full px-3 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'
+            } rounded-md focus:outline-none focus:ring-2 ${errors.email ? 'focus:ring-red-200' : 'focus:ring-indigo-200'
+            }`}
         />
         {errors.email && (
           <p className="text-red-500 text-sm mt-1">{errors.email}</p>
@@ -168,12 +196,10 @@ export const FeedbackModal = ({
           placeholder="Your feedback"
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          maxLength={3000} // Limit to 3000 characters
-          className={`text-gray-700 mt-1 w-full px-3 py-2 border ${
-            errors.message ? 'border-red-500' : 'border-gray-300'
-          } rounded-md focus:outline-none focus:ring-2 ${
-            errors.message ? 'focus:ring-red-200' : 'focus:ring-indigo-200'
-          } h-32 resize-none`}
+          maxLength={3000}
+          className={`text-gray-700 mt-1 w-full px-3 py-2 border ${errors.message ? 'border-red-500' : 'border-gray-300'
+            } rounded-md focus:outline-none focus:ring-2 ${errors.message ? 'focus:ring-red-200' : 'focus:ring-indigo-200'
+            } h-32 resize-none`}
         ></textarea>
         <div className="text-right text-gray-500 text-xs mt-1">
           {message.length} / 3000
@@ -185,9 +211,31 @@ export const FeedbackModal = ({
 
       <button
         type="submit"
-        className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-300"
+        className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-300 flex items-center justify-center"
+        disabled={isSendingFeedback}
       >
-        Send
+        <span>{isSendingFeedback ? 'Sending...' : 'Send'}</span>
+
+        <svg
+          className={`ml-2 h-5 w-5 animate-spin ${isSendingFeedback ? 'visible' : 'invisible'}`}
+          xmlns="http://www.w3.org/2000/svg"
+          fill="none"
+          viewBox="0 0 24 24"
+        >
+          <circle
+            className="opacity-25"
+            cx="12"
+            cy="12"
+            r="10"
+            stroke="currentColor"
+            strokeWidth="4"
+          ></circle>
+          <path
+            className="opacity-75"
+            fill="currentColor"
+            d="M4 12a8 8 0 018-8v4a4 4 0 00-4 4H4z"
+          ></path>
+        </svg>
       </button>
     </form>
   </motion.div>
