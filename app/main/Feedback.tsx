@@ -15,7 +15,7 @@ const maxMessageLength: number = 3000
 
 export const Feedback = () => {
   const translation: TFunction = useTranslation('common').t;
- 
+
   const [isFeedbackComponentOpen, setFeedbackComponentOpen] = useState(false);
   const [email, setEmail] = useState<string>('');
   const [message, setMessage] = useState<string>('');
@@ -209,12 +209,16 @@ export const FeedbackModal = ({
             } rounded-md focus:outline-none focus:ring-2 ${errors.message ? 'focus:ring-red-200' : 'focus:ring-indigo-200'
             } h-32 resize-none`}
         ></textarea>
-        <div className="text-right text-gray-500 text-xs mt-1">
-          {message.length} / {maxMessageLength}
+        <div className="flex items-center justify-between">
+          <div className="flex-1">
+            {errors.message && (
+              <p className="text-red-500 text-sm mt-1">{errors.message}</p>
+            )}
+          </div>
+          <div className="text-right text-gray-500 text-xs mt-1">
+            {message.length} / {maxMessageLength}
+          </div>
         </div>
-        {errors.message && (
-          <p className="text-red-500 text-sm mt-1">{errors.message}</p>
-        )}
       </div>
 
       <button
