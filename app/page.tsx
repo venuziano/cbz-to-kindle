@@ -18,6 +18,7 @@ import FormHints from './main/FormHints';
 import ProgressBar from './main/ProgressBar';
 import ConversionComplete from './main/ConversionComplete';
 import { useGA } from '@/hooks/useGA';
+import { Feedback } from './main/Feedback';
 
 interface FormErrors {
   newPDFWidth?: string;
@@ -153,14 +154,14 @@ export default function Home() {
     e.preventDefault();
     setNewPDFBlob(null);
     const formErrors: FormErrors = {};
-  
+
     // Validate first number
     if (!newPDFWidth && isPDFTypeSelected) {
       formErrors.newPDFWidth = translation('imageWidthRequired');
     } else if (isNaN(Number(newPDFWidth))) {
       formErrors.newPDFWidth = translation('mustBeValidNumber');
     }
-  
+
     // Validate second number
     if (!newPDFQuality && isPDFTypeSelected) {
       formErrors.newPDFQuality = translation('imageWidthQualityRequired');
@@ -169,7 +170,7 @@ export default function Home() {
     } else if (Number(newPDFQuality) > 100) {
       formErrors.newPDFQuality = translation('imageWidthQualityMaxAllowed');
     }
-  
+
     // Validate file input
     if (!file) {
       formErrors.file = translation('chooseFileRequired');
@@ -177,16 +178,16 @@ export default function Home() {
       const allowedExtensions = ['cbz'];
       const fileExtension = file.name.split('.').pop()?.toLowerCase();
       const maxFileSizeInBytes = 1 * 1024 * 1024 * 1024; // 1GB in bytes
-  
+
       if (!allowedExtensions.includes(fileExtension || '')) {
         formErrors.file = translation('onlyCbzAllowed');
       } else if (file.size > maxFileSizeInBytes) {
         formErrors.file = translation('fileSizeExceeded');
       }
     }
-  
+
     setErrors(formErrors);
-  
+
     // Submit form if no errors
     if (Object.keys(formErrors).length === 0 && file) {
       const formatBytes = (bytes: number): string => {
@@ -199,13 +200,13 @@ export default function Home() {
         }
       };
 
-      recordGa({ 
-        category: 'Interaction', 
+      recordGa({
+        category: 'Interaction',
         action: 'Convert_test',
         fileName: file.name,
         fileSize: `${String(formatBytes(file.size))}`
       });
-  
+
       if (isPDFTypeSelected) {
         // PDF conversion branch remains unchanged.
         setProgress(0);
@@ -230,7 +231,7 @@ export default function Home() {
         // Use a Web Worker for EPUB conversion.
         setProgress(0);
         const worker = new Worker(new URL('../workers/worker.js', import.meta.url));
-  
+
         worker.onmessage = (e: MessageEvent) => {
           const { type, progress: workerProgress, blob, error } = e.data;
           if (type === 'progress') {
@@ -244,7 +245,7 @@ export default function Home() {
             worker.terminate();
           }
         };
-  
+
         // Post the file to the worker.
         worker.postMessage({ file });
       }
@@ -487,6 +488,8 @@ export default function Home() {
         </form>
 
         <Actions customClassName="flex flex-col md:flex-row md:mt-0 mt-6 md:absolute bottom-4" />
+
+        <Feedback />
 
         <ErrorToast message={errorToastMessage} onClose={closeToast} />
         <SuccessToast message={successToastMessage} onClose={successToast} />
