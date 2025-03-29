@@ -31,10 +31,14 @@ export async function POST(req: NextRequest) {
         debug_mode: 1,
         category: category,
         label: label || '',
-        file_info: `${fileName}_FILE_SIZE:_${fileSize}`
+        ...(fileName && fileSize && {
+          file_info: `${fileName}_FILE_SIZE:_${fileSize}`
+        })
       }
     }]
   };
+
+
 
   try {
     const response = await fetch(
