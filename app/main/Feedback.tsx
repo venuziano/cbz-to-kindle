@@ -3,13 +3,19 @@ import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { FaBullhorn } from 'react-icons/fa';
 import ErrorToast from './ErrorToast';
 import SuccessToast from './SuccessToast';
+import { TFunction } from 'i18next';
+import { useTranslation } from 'react-i18next';
 
 interface FormErrors {
   email?: string;
   message?: string;
 }
 
+const maxMessageLength: number = 3000
+
 export const Feedback = () => {
+  const translation: TFunction = useTranslation('common').t;
+ 
   const [isFeedbackComponentOpen, setFeedbackComponentOpen] = useState(false);
   const [email, setEmail] = useState<string>('');
   const [message, setMessage] = useState<string>('');
@@ -31,17 +37,17 @@ export const Feedback = () => {
     const formErrors: { email?: string; message?: string } = {};
 
     if (!email) {
-      formErrors.email = 'Email is required';
+      formErrors.email = translation('feedback.emailRequired');
     } else if (!/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i.test(email)) {
-      formErrors.email = 'Invalid email address';
+      formErrors.email = translation('feedback.invalidEmailAddress');
     }
 
     if (!message) {
-      formErrors.message = 'Message is required';
+      formErrors.message = translation('feedback.messageRequired');
     } else if (message.length < 10) {
-      formErrors.message = 'Message must be at least 10 characters';
-    } else if (message.length > 3000) {
-      formErrors.message = 'Message cannot exceed 3000 characters';
+      formErrors.message = translation('feedback.messageMinRequired');
+    } else if (message.length > maxMessageLength) {
+      formErrors.message = translation('feedback.messageMaxRequired');
     }
 
     setErrors(formErrors);
@@ -65,11 +71,10 @@ export const Feedback = () => {
         setEmail('');
         setMessage('');
         setErrors({});
-        setSuccessToastMessage('Thanks for sending your feedback!');
-        // setSuccessToastMessage(translation('fileConvertedSuccessfuly'));
+        setSuccessToastMessage(translation('feedback.successMessage'));
         setFeedbackComponentOpen(false);
       } else {
-        setErrorToastMessage('Oh no, something went wrong. Please try again later.');
+        setErrorToastMessage(translation('feedback.errorMessage'));
       }
 
       setSendingFeedback(false)
@@ -91,6 +96,7 @@ export const Feedback = () => {
             setMessage={setMessage}
             modalVariants={modalVariants}
             isSendingFeedback={isSendingFeedback}
+            translation={translation}
           />
         )}
       </AnimatePresence>
@@ -100,7 +106,7 @@ export const Feedback = () => {
           onClick={() => setFeedbackComponentOpen(true)}
           className="bg-gray-600 text-white text-xs px-3 py-1 rounded-full cursor-pointer hover:bg-gray-700 hover:scale-105 transition transform duration-200 ease-in-out"
         >
-          Give Feedback
+          {translation('feedback.giveFeedback')}
         </span>
         <button
           onClick={() => setFeedbackComponentOpen(true)}
@@ -126,6 +132,7 @@ export interface FeedbackModalProps {
   setMessage: React.Dispatch<React.SetStateAction<string>>;
   modalVariants: Variants;
   isSendingFeedback: boolean;
+  translation: TFunction
 }
 
 export const FeedbackModal = ({
@@ -137,7 +144,8 @@ export const FeedbackModal = ({
   setEmail,
   setMessage,
   modalVariants,
-  isSendingFeedback
+  isSendingFeedback,
+  translation
 }: FeedbackModalProps) => (
   <motion.div
     variants={modalVariants}
@@ -159,20 +167,20 @@ export const FeedbackModal = ({
       </button>
     </div>
     <p className="mb-5 leading-relaxed text-gray-600">
-      If you had any issues or you liked the tool, please share with me!
+      {translation('feedback.feedbackModalDescription')}
     </p>
     <form onSubmit={handleSubmit}>
       <div className="mb-4">
         <div className="flex items-center">
           <label htmlFor="email" className="block text-gray-700">
-            Email
+            {translation('feedback.email')}
           </label>
         </div>
         <input
           type="email"
           name="email"
           id="email"
-          placeholder="Your email"
+          placeholder={translation('feedback.emailPlaceholder')}
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           className={`text-gray-700 mt-1 w-full px-3 py-2 border ${errors.email ? 'border-red-500' : 'border-gray-300'
@@ -187,22 +195,22 @@ export const FeedbackModal = ({
       <div className="mb-4">
         <div className="flex items-center">
           <label htmlFor="message" className="block text-gray-700">
-            Message
+            {translation('feedback.message')}
           </label>
         </div>
         <textarea
           name="message"
           id="message"
-          placeholder="Your feedback"
+          placeholder={translation('feedback.messagePlaceholder')}
           value={message}
           onChange={(e) => setMessage(e.target.value)}
-          maxLength={3000}
+          maxLength={maxMessageLength}
           className={`text-gray-700 mt-1 w-full px-3 py-2 border ${errors.message ? 'border-red-500' : 'border-gray-300'
             } rounded-md focus:outline-none focus:ring-2 ${errors.message ? 'focus:ring-red-200' : 'focus:ring-indigo-200'
             } h-32 resize-none`}
         ></textarea>
         <div className="text-right text-gray-500 text-xs mt-1">
-          {message.length} / 3000
+          {message.length} / {maxMessageLength}
         </div>
         {errors.message && (
           <p className="text-red-500 text-sm mt-1">{errors.message}</p>
@@ -214,7 +222,7 @@ export const FeedbackModal = ({
         className="w-full bg-indigo-600 text-white py-2 px-4 rounded-md hover:bg-indigo-700 transition duration-300 flex items-center justify-center"
         disabled={isSendingFeedback}
       >
-        <span>{isSendingFeedback ? 'Sending...' : 'Send'}</span>
+        <span>{isSendingFeedback ? `${translation('feedback.sending')}` : `${translation('feedback.send')}`}</span>
 
         <svg
           className={`ml-2 h-5 w-5 animate-spin ${isSendingFeedback ? 'visible' : 'invisible'}`}

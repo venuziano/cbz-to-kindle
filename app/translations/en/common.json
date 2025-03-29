@@ -38,5 +38,22 @@
     "lastSentence": "These recommendations are based on my personal usage and may vary depending on your specific requirements and constraints.",
     "donwloadLabel": "Don’t have a CBZ file to test?",
     "downloadButtonLabel": "Click Here to Download a Test File"
+  },
+  "feedback": {
+    "emailRequired": "Email is required",
+    "invalidEmailAddress": "Invalid email address",
+    "messageRequired": "Message is required",
+    "messageMinRequired": "Message must be at least 10 characters",
+    "messageMaxRequired": "Message cannot exceed 3000 characters",
+    "successMessage": "Thanks for sending your feedback!",
+    "errorMessage": "Oh no, something went wrong. Please try again later.",
+    "giveFeedback": "Give Feedback",
+    "feedbackModalDescription": "If you had any issues or you liked the tool, please share with me!",
+    "email": "Email",
+    "emailPlaceholder": "Your Email",
+    "message": "Message",
+    "messagePlaceholder": "Your feedback",
+    "sending": "Sending...",
+    "send": "Send"
   }
 }
