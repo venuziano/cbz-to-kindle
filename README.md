@@ -4,6 +4,8 @@ This tool helps you quickly transform CBZ files into PDFs or EPUBs for your Kind
 <br />
 No installation required — everything happens in your browser!
 
+Live website: https://www.cbz-to-pdf.com.br/
+
 ![](cbz-website.PNG)
 
 ### Google Analytics
