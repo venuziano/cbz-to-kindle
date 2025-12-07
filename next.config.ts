@@ -24,9 +24,6 @@ export default withSentryConfig(withSentryConfig(nextConfig, {
   // side errors will fail.
   tunnelRoute: "/api/monitoring", // Use your SSR route here,
 
-  // Hides source maps from generated client bundles
-  hideSourceMaps: true,
-
   // Automatically tree-shake Sentry logger statements to reduce bundle size
   disableLogger: true,
 
