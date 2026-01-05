@@ -3,7 +3,6 @@ import localFont from "next/font/local";
 import { headers } from 'next/headers';
 
 import I18nClientWrapper from "@/utils/i18n/i18n-wrapper";
-import SeoStructuredData from "@/utils/SeoStructuredData";
 
 import "./globals.css";
 
@@ -65,11 +64,6 @@ export default async function RootLayout({
 
   return (
     <html lang={userLanguage}>
-      <head>
-        <SeoStructuredData />
-        <meta name="apple-mobile-web-app-title" content="CBZ 2 PDF" />
-      </head>
-
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >

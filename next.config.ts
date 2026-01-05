@@ -1,7 +1,26 @@
 import { withSentryConfig } from "@sentry/nextjs";
 import type { NextConfig } from "next";
 
-const nextConfig: NextConfig = {};
+const nextConfig: NextConfig = {
+  async redirects() {
+    return [
+      // Redirect Vercel default domain to the production domain
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "cbz-to-kindle.vercel.app" }],
+        destination: "https://www.cbz-to-pdf.com.br/:path*",
+        permanent: true,
+      },
+      // Redirect non-www to www
+      {
+        source: "/:path*",
+        has: [{ type: "host", value: "cbz-to-pdf.com.br" }],
+        destination: "https://www.cbz-to-pdf.com.br/:path*",
+        permanent: true,
+      },
+    ];
+  },
+};
 
 export default withSentryConfig(withSentryConfig(nextConfig, {
   // For all available options, see:

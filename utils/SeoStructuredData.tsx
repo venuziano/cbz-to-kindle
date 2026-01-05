@@ -1,5 +1,3 @@
-"use client"; // or not needed if we just want to inject <script>?
-
 import React from 'react';
 
 const SeoStructuredData = () => {
